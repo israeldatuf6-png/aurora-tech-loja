@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURORA TECH — Loja Oficial de Eletrônicos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #050811;
+      --surface: #0c1222;
+      --surface-elev: #121b31;
+      --input-bg: #070b15;
+      --border: rgba(148, 163, 184, 0.14);
+      --border-strong: rgba(56, 189, 248, 0.42);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --accent: #38bdf8;
+      --danger: #f87171;
+      --shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.65);
+      --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: var(--font-body);
+    }
+
+    h1, h2, h3, .brand-title, .price-now, .cart-total-row, button, .filter-chip {
+      font-family: var(--font-display);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 85% 48% at 50% -12%, rgba(16, 185, 129, 0.16), transparent),
+        radial-gradient(ellipse 68% 42% at 88% 14%, rgba(56, 189, 248, 0.15), transparent),
+        var(--bg);
+      color: var(--text);
+      padding-bottom: 56px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.25); }
+      50% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-2px); }
+    }
+
+    .topbar-security {
+      background: #080d19;
+      border-bottom: 1px solid var(--border);
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .conn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+    }
+
+    .conn-pill.warn {
+      background: rgba(245, 158, 11, 0.14);
+      border-color: rgba(245, 158, 11, 0.38);
+      color: #fcd34d;
+    }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 24px 18px 0;
+    }
+
+    header.main-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(12, 18, 34, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      margin-bottom: 22px;
+      animation: fadeSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #041017;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.03em;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.28);
+      animation: floatSlow 3.6s ease-in-out infinite;
+    }
+
+    .brand-title {
+      font-size: 1.24rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-tag {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cart-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(56, 189, 248, 0.12));
+      border: 1px solid rgba(16, 185, 129, 0.42);
+      color: #6ee7b7;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cart-pill:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.24), rgba(56, 189, 248, 0.18));
+      box-shadow: 0 10px 24px -8px rgba(16, 185, 129, 0.35);
+    }
+
+    .cart-pill:active {
+      transform: scale(0.97);
+    }
+
+    .subpage {
+      display: none;
+    }
+
+    .subpage.active {
+      display: block;
+      animation: fadeSlideUp 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .trust-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.22s ease, background 0.22s ease;
+    }
+
+    .trust-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-strong);
+      background: var(--surface-elev);
+    }
+
+    .trust-item small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      margin-top: 2px;
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-head h1, .section-head h2 {
+      margin: 0;
+      font-size: 1.56rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .filter-chip {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .filter-chip:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .filter-chip.active {
+      background: linear-gradient(135deg, var(--primary), #0284c7);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 8px 20px -6px rgba(16, 185, 129, 0.45);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 34px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      animation: fadeSlideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .product-card:nth-child(2) { animation-delay: 0.05s; }
+    .product-card:nth-child(3) { animation-delay: 0.10s; }
+    .product-card:nth-child(4) { animation-delay: 0.15s; }
+    .product-card:nth-child(5) { animation-delay: 0.20s; }
+    .product-card:nth-child(6) { animation-delay: 0.25s; }
+    .product-card:nth-child(7) { animation-delay: 0.30s; }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-strong);
+      box-shadow: 0 24px 48px -14px rgba(0, 0, 0, 0.78);
+    }
+
+    .product-card.in-cart {
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      height: 220px;
+      background: var(--surface-elev);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .badge-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(6, 9, 19, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-new {
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      border-color: transparent;
+    }
+
+    .product-body {
+      padding: 19px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .product-body h2 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    .product-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.48;
+    }
+
+    .rating {
+      color: #fbbf24;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 9px;
+    }
+
+    .price-box {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 13px;
+    }
+
+    .price-old {
+      color: #64748b;
+      text-decoration: line-through;
+      font-size: 0.85rem;
+    }
+
+    .price-now {
+      color: #34d399;
+      font-size: 1.38rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .add-btn {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      box-shadow: 0 10px 22px -8px rgba(16, 185, 129, 0.45);
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), filter 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .add-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 26px -8px rgba(16, 185, 129, 0.58);
+    }
+
+    .add-btn:active {
+      transform: scale(0.97);
+    }
+
+    .add-btn.added-flash {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      box-shadow: 0 12px 24px -8px rgba(56, 189, 248, 0.55);
+    }
+
+    .box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .box h3 {
+      margin: 0 0 4px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+    }
+
+    .box-sub {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .cart-empty {
+      padding: 24px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeSlideUp 0.24s ease both;
+    }
+
+    .cart-item-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .cart-item-sub {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-elev);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+    }
+
+    .qty-btn:hover {
+      border-color: var(--border-strong);
+      background: rgba(56, 189, 248, 0.14);
+    }
+
+    .qty-btn:active {
+      transform: scale(0.92);
+    }
+
+    .remove-btn {
+      border: none;
+      background: transparent;
+      color: var(--danger);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+
+    .remove-btn:hover {
+      background: rgba(248, 113, 113, 0.12);
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      margin-top: 6px;
+      font-size: 1.16rem;
+      font-weight: 800;
+    }
+
+    .cart-total-row span:last-child {
+      color: #34d399;
+    }
+
+    .primary-action-btn {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 13px;
+      background: linear-gradient(135deg, #10b981 0%, #0284c7 100%);
+      color: #ffffff;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 12px 26px -8px rgba(2, 132, 199, 0.45);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .primary-action-btn:hover {
+      filter: brightness(1.09);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.5);
+    }
+
+    .primary-action-btn:active {
+      transform: scale(0.98);
+    }
+
+    .primary-action-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-btn {
+      padding: 10px 16px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface-elev);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--border-strong);
+      background: rgba(56, 189, 248, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn:active {
+      transform: scale(0.97);
+    }
+
+    .payment-subpage-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.85fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .payment-subpage-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field.span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .section-divider {
+      grid-column: 1 / -1;
+      margin: 6px 0 4px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7dd3fc;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 0.92rem;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .card-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-input-wrap input {
+      padding-right: 118px;
+    }
+
+    .brand-tag-inline {
+      position: absolute;
+      right: 10px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+    }
+
+    .brands-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .brand-img-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      opacity: 0.55;
+      transition: opacity 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .brand-img-chip.active-brand {
+      opacity: 1;
+      border-color: #34d399;
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.35);
+    }
+
+    .brand-img-chip svg {
+      height: 20px;
+      width: auto;
+      display: block;
+    }
+
+    .card-box {
+      grid-column: 1 / -1;
+      background: linear-gradient(180deg, rgba(19, 28, 51, 0.88), rgba(8, 12, 23, 0.96));
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .card-box.visible {
+      display: block;
+      animation: fadeSlideUp 0.26s ease both;
+    }
+
+    .card-visual-rich {
+      background: linear-gradient(135deg, #111c36 0%, #0b1120 50%, #064e3b 165%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border-radius: 15px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .card-visual-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .card-chip-gold {
+      width: 34px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #fde047, #ca8a04);
+    }
+
+    .card-visual-brand-slot {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(9, 14, 26, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .card-visual-num {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 1.06rem;
+      letter-spacing: 0.13em;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+
+    .card-visual-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.76rem;
+      color: #e2e8f0;
+    }
+
+    .info-pagamento-box {
+      grid-column: 1 / -1;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #a7f3d0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .info-pagamento-box.visible {
+      display: block;
+      animation: fadeSlideUp 0.22s ease both;
+    }
+
+    .status-msg {
+      margin-top: 12px;
+      padding: 11px 14px;
+      border-radius: 11px;
+      font-size: 0.88rem;
+      display: none;
+    }
+
+    .status-msg.ok {
+      display: block;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #a7f3d0;
+    }
+
+    .status-msg.err {
+      display: block;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fecaca;
+    }
+
+    .confirm-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #6ee7b7;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    /* RASTREAMENTO EM 4 ETAPAS (INVISÍVEL ATÉ APROVAR A COMPRA) */
+    #subpage-rastreamento {
+      display: none !important;
+    }
+
+    #subpage-rastreamento.unlocked.active {
+      display: block !important;
+      animation: fadeSlideUp 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .tracking-code-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: rgba(8, 12, 23, 0.85);
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+    }
+
+    .tracking-code-val {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #7dd3fc;
+    }
+
+    .steps-4-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .step-card {
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      position: relative;
+      opacity: 0.65;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .step-card.done {
+      opacity: 1;
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .step-card.active-stage {
+      opacity: 1;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35), var(--shadow);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.12), rgba(19, 28, 51, 0.95));
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      background: rgba(148, 163, 184, 0.16);
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .step-card.done .step-num {
+      background: var(--primary);
+      color: #05110d;
+    }
+
+    .step-card.active-stage .step-num {
+      background: var(--accent);
+      color: #05101c;
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 0.96rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .step-status-pill {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--muted);
+    }
+
+    .step-card.done .step-status-pill {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .step-card.active-stage .step-status-pill {
+      background: rgba(56, 189, 248, 0.22);
+      color: #7dd3fc;
+    }
+
+    .step-desc {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .review-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-strong);
+    }
+
+    .review-card p {
+      margin: 8px 0;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.48;
+    }
+
+    .review-author {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    footer.store-footer {
+      margin-top: 40px;
+      padding: 22px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .verified-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(56, 189, 248, 0.12));
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      animation: pulseGlow 3s infinite;
+    }
+
+    .verified-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #10b981;
+      color: #05110d;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .verified-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #6ee7b7;
+    }
+
+    .verified-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar-security">
+    <span class="conn-pill" id="connStatusBadge">🔒 Conexão Segura Ativa</span>
+    <span id="connStatusText">Nunca arquivamos seus dados • Protegidos atualmente pela Lei do Consumidor</span>
+  </div>
+
+  <div class="wrap">
+    <header class="main-header">
+      <div class="brand" id="brandHome">
+        <div class="brand-logo">AT</div>
+        <div>
+          <div class="brand-title">AURORA TECH</div>
+          <div class="brand-tag">Smartphones, Notebooks, Drones e Acessórios</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="secondary-btn" id="headerBackBtn" style="display: none;">← Voltar à loja</button>
+        <button type="button" class="cart-pill" id="cartPillBtn">
+          Carrinho: <span id="cartCount">0</span> item(ns) • <span id="cartHeaderTotal">R$ 0,00</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- SUBPÁGINA 1: LOJA & CARRINHO -->
+    <div class="subpage active" id="subpage-loja">
+      <section class="trust-strip">
+        <div class="trust-item">
+          <div>🛡️</div>
+          <div>
+            <strong>Compra Protegida</strong>
+            <small>Produtos verificados antes do envio</small>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div>🚚</div>
+          <div>
+            <strong>Entrega Rápida</strong>
+            <small>Despacho com código de rastreio</small>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div>🔒</div>
+          <div>
+            <strong>Conexão Segura</strong>
+            <small>Nunca arquivamos seus dados</small>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div>⭐</div>
+          <div>
+            <strong>Clientes Satisfeitos</strong>
+            <small>Média de 4,9 estrelas nas avaliações</small>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-head">
+        <div>
+          <h1>Catálogo em Oferta</h1>
+          <p>Escolha seus produtos, adicione ao carrinho e clique em avançar para o pagamento.</p>
+        </div>
+      </div>
+
+      <div class="filter-bar" id="filterBar">
+        <button type="button" class="filter-chip active" data-cat="todos">Todos</button>
+        <button type="button" class="filter-chip" data-cat="galaxy">Galaxy / Android</button>
+        <button type="button" class="filter-chip" data-cat="iphone">iPhones</button>
+        <button type="button" class="filter-chip" data-cat="notebook">Notebooks</button>
+        <button type="button" class="filter-chip" data-cat="drone">Drones</button>
+        <button type="button" class="filter-chip" data-cat="acessorios">Áudio &amp; Smartwatches</button>
+      </div>
+
+      <section class="products-grid" id="productsGrid">
+        <article
+          class="product-card"
+          data-cat="galaxy"
+          data-id="s26-ultra"
+          data-nome="Samsung Galaxy S26 Ultra 256GB Black"
+          data-preco="1890.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top badge-new">Destaque • S Pen &amp; 5G AI</span>
+            <img
+              src="./s26-ultra.jpg"
+              alt="Samsung Galaxy S26 Ultra 256GB Black"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>Samsung Galaxy S26 Ultra 256GB Black</h2>
+              <p>Acabamento Black premium, caneta S Pen integrada, conectividade 5G AI e câmeras avançadas.</p>
+              <div class="rating">★★★★★ 5,0 (112 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 3.190,00</span>
+                <span class="price-now">R$ 1.890,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="iphone"
+          data-id="iphone-18"
+          data-nome="iPhone 18 Pro 256GB Vinho"
+          data-preco="1790.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top badge-new">Lançamento • Preço Baixo</span>
+            <img
+              src="./iphone-18.jpg"
+              alt="iPhone 18 Pro 256GB Vinho"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>iPhone 18 Pro 256GB Vinho</h2>
+              <p>Acabamento premium em tom vinho, sistema triplo de câmeras e alta performance.</p>
+              <div class="rating">★★★★★ 5,0 (64 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 2.990,00</span>
+                <span class="price-now">R$ 1.790,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="iphone"
+          data-id="iphone-13"
+          data-nome="iPhone 13 128GB Branco"
+          data-preco="1290.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top">Mais Vendido</span>
+            <img
+              src="./Sou grata pelo meu iPhone 13 branco_.jpg"
+              alt="iPhone 13 128GB Branco"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1632661674596-df8be070a5c5?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>iPhone 13 128GB Branco</h2>
+              <p>Tela Super Retina XDR 6.1", câmera dupla e excelente desempenho diário.</p>
+              <div class="rating">★★★★★ 4,9 (128 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 2.190,00</span>
+                <span class="price-now">R$ 1.290,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="notebook"
+          data-id="notebook-16gb"
+          data-nome="Notebook Full HD 16GB / 512GB SSD"
+          data-preco="1150.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top">Oferta Relâmpago</span>
+            <img
+              src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
+              alt="Notebook Full HD 16GB / 512GB SSD"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>Notebook Full HD 16GB / 512GB SSD</h2>
+              <p>Ideal para trabalho, estudos, planilhas e navegação rápida com SSD veloz.</p>
+              <div class="rating">★★★★★ 4,8 (94 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 1.850,00</span>
+                <span class="price-now">R$ 1.150,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="drone"
+          data-id="drone-4k"
+          data-nome="Drone 4K Câmera Dupla"
+          data-preco="390.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top">Preço Baixo</span>
+            <img
+              src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=800&q=80"
+              alt="Drone 4K Câmera Dupla"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>Drone 4K Câmera Dupla</h2>
+              <p>Compacto e dobrável, com controle remoto e gravação aérea em alta definição.</p>
+              <div class="rating">★★★★☆ 4,8 (76 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 690,00</span>
+                <span class="price-now">R$ 390,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="acessorios"
+          data-id="fone-anc"
+          data-nome="Fone Wireless ANC Pro"
+          data-preco="179.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top">Promoção</span>
+            <img
+              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+              alt="Fone Wireless ANC Pro"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>Fone Wireless ANC Pro</h2>
+              <p>Áudio nítido, graves encorpados, estojo de carga rápida e conexão estável.</p>
+              <div class="rating">★★★★★ 4,9 (52 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 299,00</span>
+                <span class="price-now">R$ 179,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
+          data-cat="acessorios"
+          data-id="smartwatch-ultra"
+          data-nome="Smartwatch Série Ultra GPS"
+          data-preco="249.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top">Oferta</span>
+            <img
+              src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80"
+              alt="Smartwatch Série Ultra GPS"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>Smartwatch Série Ultra GPS</h2>
+              <p>Tela ampla de alta visibilidade, notificações no pulso e bateria de longa duração.</p>
+              <div class="rating">★★★★★ 4,8 (41 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 420,00</span>
+                <span class="price-now">R$ 249,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <div class="box" id="cartSection">
+        <h3>Seu Carrinho</h3>
+        <p class="box-sub">Confira seus produtos e avance para a etapa de pagamento</p>
+
+        <div id="cartItemsContainer">
+          <div class="cart-empty">Seu carrinho está vazio. Clique em "Escolher e adicionar" em um produto.</div>
+        </div>
+
+        <div class="cart-total-row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">R$ 0,00</span>
+        </div>
+
+        <button type="button" class="primary-action-btn" id="goToPaymentBtn">Avançar para pagamento →</button>
+      </div>
+
+      <section>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div>★★★★★</div>
+            <p>"Galaxy S26 Ultra chegou impecável, tela incrível e S Pen super responsiva."</p>
+            <div class="review-author">Matheus P. • Galaxy S26 Ultra</div>
+          </div>
+          <div class="review-card">
+            <div>★★★★★</div>
+            <p>"Aparelho impecável, acabamento lindo e entrega dentro do prazo combinado."</p>
+            <div class="review-author">Camila R. • iPhone 18 Pro</div>
+          </div>
+          <div class="review-card">
+            <div>★★★★★</div>
+            <p>"Notebook rápido para o trabalho e faculdade, ótimo custo-benefício."</p>
+            <div class="review-author">Lucas M. • Notebook 16GB</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SUBPÁGINA 2: PAGAMENTO -->
+    <div class="subpage" id="subpage-pagamento">
+      <div class="section-head">
+        <div>
+          <h1>Finalizar Pagamento</h1>
+          <p>Preencha seus dados de entrega e escolha a forma de pagamento.</p>
+        </div>
+        <button type="button" class="secondary-btn" id="backToStoreBtn">← Voltar para a loja</button>
+      </div>
+
+      <div class="payment-subpage-grid">
+        <div class="box">
+          <h3>Dados e Forma de Pagamento</h3>
+          <p class="box-sub">Nunca arquivamos seus dados • Protegidos atualmente pela Lei do Consumidor</p>
+
+          <form id="checkoutForm" novalidate>
+            <div class="fields">
+              <div class="field">
+                <label for="nome">Nome completo</label>
+                <input id="nome" name="nome" type="text" placeholder="Seu nome completo" required />
+              </div>
+
+              <div class="field">
+                <label for="telefone">Telefone / WhatsApp</label>
+                <input id="telefone" name="telefone" type="tel" placeholder="(85) 99999-9999" required />
+              </div>
+
+              <div class="field span-2">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" placeholder="voce@exemplo.com" required />
+              </div>
+
+              <div class="section-divider">Forma de Pagamento</div>
+
+              <div class="field span-2">
+                <label for="formaPagamento">Selecione a forma de pagamento</label>
+                <select id="formaPagamento" name="formaPagamento" required>
+                  <option value="" selected disabled>Escolha como deseja pagar...</option>
+                  <option value="Cartão de Crédito">Cartão de Crédito</option>
+                  <option value="Pix">Pix</option>
+                  <option value="Boleto Bancário">Boleto Bancário</option>
+                </select>
+              </div>
+
+              <div class="card-box" id="cardFieldsBox">
+                <div class="brands-strip" aria-label="Bandeiras aceitas">
+                  <span class="brand-img-chip" data-brand-chip="VISA" title="Visa">
+                    <svg viewBox="0 0 64 22" fill="none">
+                      <rect width="64" height="22" rx="4" fill="#1E3A8A"/>
+                      <text x="32" y="15" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-weight="900" font-size="11">VISA</text>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="MASTERCARD" title="Mastercard">
+                    <svg viewBox="0 0 64 22" fill="none">
+                      <rect width="64" height="22" rx="4" fill="#111827"/>
+                      <circle cx="27" cy="11" r="7" fill="#EF4444"/>
+                      <circle cx="37" cy="11" r="7" fill="#F59E0B" fill-opacity="0.88"/>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="ELO" title="Elo">
+                    <svg viewBox="0 0 64 22" fill="none">
+                      <rect width="64" height="22" rx="4" fill="#0F172A"/>
+                      <text x="32" y="15" text-anchor="middle" fill="#FACC15" font-family="Arial, sans-serif" font-weight="900" font-size="11">ELO</text>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="AMEX" title="American Express">
+                    <svg viewBox="0 0 64 22" fill="none">
+                      <rect width="64" height="22" rx="4" fill="#0284C7"/>
+                      <text x="32" y="15" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-weight="900" font-size="10">AMEX</text>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="HIPERCARD" title="Hipercard">
+                    <svg viewBox="0 0 74 22" fill="none">
+                      <rect width="74" height="22" rx="4" fill="#991B1B"/>
+                      <text x="37" y="15" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-weight="800" font-size="9.5">HIPER</text>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="DINERS CLUB" title="Diners Club">
+                    <svg viewBox="0 0 74 22" fill="none">
+                      <rect width="74" height="22" rx="4" fill="#1E293B"/>
+                      <text x="37" y="15" text-anchor="middle" fill="#93C5FD" font-family="Arial, sans-serif" font-weight="800" font-size="9">DINERS</text>
+                    </svg>
+                  </span>
+                  <span class="brand-img-chip" data-brand-chip="DISCOVER" title="Discover">
+                    <svg viewBox="0 0 74 22" fill="none">
+                      <rect width="74" height="22" rx="4" fill="#27272A"/>
+                      <text x="37" y="15" text-anchor="middle" fill="#FB923C" font-family="Arial, sans-serif" font-weight="800" font-size="9">DISCOVER</text>
+                    </svg>
+                  </span>
+                </div>
+
+                <div class="card-visual-rich">
+                  <div class="card-visual-top">
+                    <div class="card-chip-gold"></div>
+                    <div class="card-visual-brand-slot">
+                      <span id="cardBrandImgSlot"></span>
+                      <span id="cardBrandPreview">CARTÃO</span>
+                    </div>
+                  </div>
+                  <div class="card-visual-num" id="cardNumPreview">•••• •••• •••• ••••</div>
+                  <div class="card-visual-foot">
+                    <span id="cardNamePreview">NOME NO CARTÃO</span>
+                    <span id="cardExpPreview">MM/AA</span>
+                  </div>
+                </div>
+
+                <div class="fields">
+                  <div class="field span-2">
+                    <label for="nomeCartao">Nome completo inserido no cartão</label>
+                    <input
+                      id="nomeCartao"
+                      name="nomeCartao"
+                      type="text"
+                      placeholder="Ex.: MARIA CLARA SILVA"
+                    />
+                  </div>
+
+                  <div class="field span-2">
+                    <label for="cpfTitular">CPF do titular do cartão</label>
+                    <input
+                      id="cpfTitular"
+                      name="cpfTitular"
+                      type="text"
+                      inputmode="numeric"
+                      placeholder="000.000.000-00"
+                      maxlength="14"
+                    />
+                  </div>
+
+                  <div class="field span-2">
+                    <label for="numeroCartao">Número do cartão</label>
+                    <div class="card-input-wrap">
+                      <input
+                        id="numeroCartao"
+                        name="numeroCartao"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="cc-number"
+                        placeholder="0000 0000 0000 0000"
+                        maxlength="23"
+                      />
+                      <span class="brand-tag-inline" id="detectedBrandBadge">BANDEIRA</span>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label for="validadeCartao">Validade (MM/AA)</label>
+                    <input
+                      id="validadeCartao"
+                      name="validadeCartao"
+                      type="text"
+                      inputmode="numeric"
+                      autocomplete="cc-exp"
+                      placeholder="MM/AA"
+                      maxlength="5"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="cvcCartao">CVC / CVV</label>
+                    <input
+                      id="cvcCartao"
+                      name="cvcCartao"
+                      type="text"
+                      inputmode="numeric"
+                      autocomplete="cc-csc"
+                      placeholder="123"
+                      maxlength="4"
+                    />
+                  </div>
+
+                  <div class="field span-2">
+                    <label for="parcelas">Parcelamento</label>
+                    <select id="parcelas" name="parcelas">
+                      <option value="1x (À vista no crédito)" selected>1x (À vista no crédito)</option>
+                      <option value="2x sem juros">2x sem juros</option>
+                      <option value="3x sem juros">3x sem juros</option>
+                      <option value="6x">6x</option>
+                      <option value="12x">12x</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-pagamento-box" id="infoPagamentoBox"></div>
+
+              <div class="field span-2">
+                <label for="mensagem">Endereço de entrega</label>
+                <textarea id="mensagem" name="mensagem" placeholder="Rua, número, bairro, cidade e complemento..."></textarea>
+              </div>
+            </div>
+
+            <button id="payBtn" class="primary-action-btn" type="submit">Pagar</button>
+            <div id="statusMsg" class="status-msg"></div>
+          </form>
+        </div>
+
+        <div class="box">
+          <h3>Resumo do Pedido</h3>
+          <p class="box-sub">Itens do carrinho incluídos</p>
+          <div id="paymentCartSummary"></div>
+          <div class="cart-total-row">
+            <span>Total a pagar</span>
+            <span id="paymentTotalLabel">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBPÁGINA 3: PAGAMENTO AUTORIZADO (APÓS PAGAMENTO) -->
+    <div class="subpage" id="subpage-confirmacao">
+      <div class="box" style="max-width: 660px; margin: 0 auto;">
+        <span class="confirm-badge">✓ PAGAMENTO AUTORIZADO</span>
+        <h3>Pagamento Autorizado</h3>
+        <p class="box-sub">Nunca arquivamos seus dados • Seus dados são protegidos atualmente pela Lei do Consumidor.</p>
+        <div id="confirmacaoDetalhes" style="font-size: 0.92rem; line-height: 1.65; color: #cbd5e1;"></div>
+        <button type="button" class="primary-action-btn" id="goToTrackingBtn">Ver rastreamento do pedido (4 etapas) →</button>
+        <button type="button" class="secondary-btn" id="newOrderBtn" style="width: 100%; margin-top: 10px;">Voltar à loja</button>
+      </div>
+    </div>
+
+    <!-- SUBPÁGINA 4: RASTREAMENTO DO PEDIDO (INVISÍVEL ATÉ APROVAR A COMPRA) -->
+    <div class="subpage" id="subpage-rastreamento">
+      <div class="section-head">
+        <div>
+          <span class="confirm-badge">✓ PAGAMENTO AUTORIZADO</span>
+          <h1>Rastreamento do Pedido</h1>
+          <p>Acompanhe seu pedido em 4 etapas — atualmente em Separação.</p>
+        </div>
+        <button type="button" class="secondary-btn" id="trackingBackStoreBtn">← Voltar para a loja</button>
+      </div>
+
+      <div class="box">
+        <div class="tracking-code-bar">
+          <div>
+            <div style="font-size: 0.78rem; color: var(--muted);">Código de rastreamento</div>
+            <div class="tracking-code-val" id="trackingCodeValue">AT-2026-000000</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.78rem; color: var(--muted);">Status atual</div>
+            <div style="font-weight: 800; color: #7dd3fc;" id="trackingCurrentStageLabel">Etapa 2 de 4 • Em Separação</div>
+          </div>
+        </div>
+
+        <div class="steps-4-grid" id="steps4Grid">
+          <div class="step-card done" data-step="1">
+            <div class="step-num">1</div>
+            <div class="step-status-pill">Concluída</div>
+            <div class="step-title">Pagamento Autorizado</div>
+            <p class="step-desc">Pagamento aprovado e confirmado para o seu pedido.</p>
+          </div>
+
+          <div class="step-card active-stage" data-step="2">
+            <div class="step-num">2</div>
+            <div class="step-status-pill">Em Separação</div>
+            <div class="step-title">Em Separação</div>
+            <p class="step-desc">Itens separados, conferidos e embalados na expedição.</p>
+          </div>
+
+          <div class="step-card" data-step="3">
+            <div class="step-num">3</div>
+            <div class="step-status-pill">Aguardando</div>
+            <div class="step-title">Em Transporte</div>
+            <p class="step-desc">Pedido despachado e a caminho do endereço de entrega.</p>
+          </div>
+
+          <div class="step-card" data-step="4">
+            <div class="step-num">4</div>
+            <div class="step-status-pill">Aguardando</div>
+            <div class="step-title">Entregue</div>
+            <p class="step-desc">Entrega concluída no endereço informado.</p>
+          </div>
+        </div>
+
+        <div id="trackingOrderSummary" style="font-size: 0.9rem; line-height: 1.65; color: #cbd5e1; border-top: 1px solid var(--border); padding-top: 16px;"></div>
+      </div>
+    </div>
+
+    <!-- RODAPÉ COM SELO VERIFICADO DA LOJA -->
+    <footer class="store-footer">
+      <div class="verified-seal">
+        <div class="verified-icon">✓</div>
+        <div>
+          <div class="verified-title">Loja Verificada • AURORA TECH Oficial</div>
+          <div class="verified-sub">Nunca arquivamos seus dados • Seus dados são protegidos atualmente pela Lei do Consumidor</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--muted);">
+        © 2026 AURORA TECH • Todos os direitos reservados
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Troque para a URL HTTPS do seu servidor quando colocar o backend online
+    const ENDPOINT_URL = 'http://localhost:3000/api/captura';
+    const CHAVE_API = 'minha_chave_secreta_123';
+
+    const connBadge = document.getElementById('connStatusBadge');
+    const isSecureOrigin =
+      window.isSecureContext ||
+      window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    if (window.location.protocol === 'https:') {
+      connBadge.textContent = '🔒 HTTPS Seguro';
+    } else if (isSecureOrigin) {
+      connBadge.textContent = '🔒 Conexão Segura (Local)';
+    } else {
+      connBadge.classList.add('warn');
+      connBadge.textContent = '⚠️ Conexão Não-HTTPS';
+    }
+
+    const carrinho = [];
+    let ultimoPedido = null;
+
+    const subpages = {
+      loja: document.getElementById('subpage-loja'),
+      pagamento: document.getElementById('subpage-pagamento'),
+      confirmacao: document.getElementById('subpage-confirmacao'),
+      rastreamento: document.getElementById('subpage-rastreamento')
+    };
+    const headerBackBtn = document.getElementById('headerBackBtn');
+
+    function abrirSubpagina(nome) {
+      if (nome === 'rastreamento' && !ultimoPedido) {
+        nome = 'loja';
+      }
+
+      Object.entries(subpages).forEach(([key, el]) => {
+        el.classList.toggle('active', key === nome);
+      });
+      headerBackBtn.style.display = nome === 'loja' ? 'none' : 'inline-flex';
+      renderizarResumoPagamento();
+      renderizarRastreamento();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('brandHome').addEventListener('click', () => abrirSubpagina('loja'));
+    document.getElementById('backToStoreBtn').addEventListener('click', () => abrirSubpagina('loja'));
+    document.getElementById('newOrderBtn').addEventListener('click', () => abrirSubpagina('loja'));
+    document.getElementById('trackingBackStoreBtn').addEventListener('click', () => abrirSubpagina('loja'));
+    document.getElementById('goToTrackingBtn').addEventListener('click', () => abrirSubpagina('rastreamento'));
+    headerBackBtn.addEventListener('click', () => abrirSubpagina('loja'));
+
+    document.querySelectorAll('#filterBar .filter-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#filterBar .filter-chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        const cat = chip.dataset.cat;
+        document.querySelectorAll('#productsGrid .product-card').forEach((card) => {
+          card.style.display = cat === 'todos' || card.dataset.cat === cat ? '' : 'none';
+        });
+      });
+    });
+
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const paymentCartSummary = document.getElementById('paymentCartSummary');
+    const cartCount = document.getElementById('cartCount');
+    const cartHeaderTotal = document.getElementById('cartHeaderTotal');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const paymentTotalLabel = document.getElementById('paymentTotalLabel');
+
+    function formatarMoeda(valor) {
+      return Number(valor || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function calcularTotalCarrinho() {
+      return carrinho.reduce((acc, item) => acc + item.preco * item.qtd, 0);
+    }
+
+    function atualizarEstadoCardsNoCarrinho() {
+      document.querySelectorAll('#productsGrid .product-card').forEach((card) => {
+        const id = card.dataset.id;
+        const item = carrinho.find((i) => i.id === id);
+        const btn = card.querySelector('.add-btn');
+        card.classList.toggle('in-cart', Boolean(item));
+        if (item) {
+          btn.textContent = `Adicionado (${item.qtd}) • +1`;
+        } else {
+          btn.textContent = 'Escolher e adicionar';
+        }
+      });
+    }
+
+    function renderizarResumoPagamento() {
+      const totalValor = calcularTotalCarrinho();
+      paymentTotalLabel.textContent = formatarMoeda(totalValor);
+
+      if (carrinho.length === 0) {
+        paymentCartSummary.innerHTML =
+          '<div class="cart-empty">Nenhum item no carrinho. Volte à loja para adicionar produtos.</div>';
+        return;
+      }
+
+      paymentCartSummary.innerHTML = carrinho
+        .map(
+          (item) => `
+          <div class="cart-item">
+            <div>
+              <div class="cart-item-title">${item.qtd}x ${item.nome}</div>
+              <div class="cart-item-sub">${formatarMoeda(item.preco)} cada</div>
+            </div>
+            <strong>${formatarMoeda(item.preco * item.qtd)}</strong>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    function renderizarCarrinho() {
+      const totalQtd = carrinho.reduce((acc, item) => acc + item.qtd, 0);
+      const totalValor = calcularTotalCarrinho();
+
+      cartCount.textContent = totalQtd;
+      cartHeaderTotal.textContent = formatarMoeda(totalValor);
+      cartSubtotal.textContent = formatarMoeda(totalValor);
+      atualizarEstadoCardsNoCarrinho();
+
+      if (carrinho.length === 0) {
+        cartItemsContainer.innerHTML =
+          '<div class="cart-empty">Seu carrinho está vazio. Clique em "Escolher e adicionar" em um produto.</div>';
+        renderizarResumoPagamento();
+        return;
+      }
+
+      cartItemsContainer.innerHTML = carrinho
+        .map(
+          (item, idx) => `
+          <div class="cart-item">
+            <div>
+              <div class="cart-item-title">${item.nome}</div>
+              <div class="cart-item-sub">${formatarMoeda(item.preco)} cada • Subtotal: ${formatarMoeda(item.preco * item.qtd)}</div>
+            </div>
+            <div class="qty-controls">
+              <button type="button" class="qty-btn" onclick="alterarQtd(${idx}, -1)">-</button>
+              <span><strong>${item.qtd}</strong></span>
+              <button type="button" class="qty-btn" onclick="alterarQtd(${idx}, 1)">+</button>
+              <button type="button" class="remove-btn" onclick="removerItem(${idx})">Remover</button>
+            </div>
+          </div>
+        `
+        )
+        .join('');
+
+      renderizarResumoPagamento();
+    }
+
+    function renderizarRastreamento() {
+      const trackingEl = document.getElementById('subpage-rastreamento');
+      if (!ultimoPedido) {
+        trackingEl.classList.remove('unlocked');
+        return;
+      }
+
+      trackingEl.classList.add('unlocked');
+      document.getElementById('trackingCodeValue').textContent = ultimoPedido.codigoRastreio;
+      document.getElementById('trackingCurrentStageLabel').textContent = 'Etapa 2 de 4 • Em Separação';
+      document.getElementById('trackingOrderSummary').innerHTML = `
+        <div><strong>Status:</strong> Pagamento Autorizado • Em Separação</div>
+        <div><strong>Cliente:</strong> ${ultimoPedido.cliente}</div>
+        <div><strong>Itens:</strong> ${ultimoPedido.itens}</div>
+        <div><strong>Pagamento:</strong> ${ultimoPedido.pagamento}</div>
+        <div><strong>Total:</strong> ${ultimoPedido.total}</div>
+        <div><strong>Endereço:</strong> ${ultimoPedido.endereco || 'Não informado'}</div>
+      `;
+    }
+
+    window.alterarQtd = function (index, delta) {
+      if (!carrinho[index]) return;
+      carrinho[index].qtd += delta;
+      if (carrinho[index].qtd <= 0) carrinho.splice(index, 1);
+      renderizarCarrinho();
+    };
+
+    window.removerItem = function (index) {
+      carrinho.splice(index, 1);
+      renderizarCarrinho();
+    };
+
+    document.querySelectorAll('.product-card .add-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.product-card');
+        const id = card.dataset.id;
+        const nome = card.dataset.nome;
+        const preco = parseFloat(card.dataset.preco);
+
+        const existente = carrinho.find((i) => i.id === id);
+        if (existente) existente.qtd += 1;
+        else carrinho.push({ id, nome, preco, qtd: 1 });
+
+        btn.classList.add('added-flash');
+        setTimeout(() => btn.classList.remove('added-flash'), 280);
+        renderizarCarrinho();
+      });
+    });
+
+    document.getElementById('cartPillBtn').addEventListener('click', () => {
+      abrirSubpagina('loja');
+      document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('goToPaymentBtn').addEventListener('click', () => {
+      if (carrinho.length === 0) {
+        alert('Adicione pelo menos um produto ao carrinho antes de avançar para o pagamento.');
+        return;
+      }
+      abrirSubpagina('pagamento');
+    });
+
+    const form = document.getElementById('checkoutForm');
+    const selectFormaPagamento = document.getElementById('formaPagamento');
+    const cardFieldsBox = document.getElementById('cardFieldsBox');
+    const infoPagamentoBox = document.getElementById('infoPagamentoBox');
+
+    const inputNomeCartao = document.getElementById('nomeCartao');
+    const inputCpfTitular = document.getElementById('cpfTitular');
+    const inputNumeroCartao = document.getElementById('numeroCartao');
+    const inputValidadeCartao = document.getElementById('validadeCartao');
+    const inputCvcCartao = document.getElementById('cvcCartao');
+    const selectParcelas = document.getElementById('parcelas');
+
+    const detectedBrandBadge = document.getElementById('detectedBrandBadge');
+    const cardBrandPreview = document.getElementById('cardBrandPreview');
+    const cardBrandImgSlot = document.getElementById('cardBrandImgSlot');
+    const cardNumPreview = document.getElementById('cardNumPreview');
+    const cardNamePreview = document.getElementById('cardNamePreview');
+    const cardExpPreview = document.getElementById('cardExpPreview');
+    const brandChips = document.querySelectorAll('.brand-img-chip[data-brand-chip]');
+
+    const payBtn = document.getElementById('payBtn');
+    const statusMsg = document.getElementById('statusMsg');
+
+    const brandMiniSvg = {
+      VISA: '<svg width="34" height="14" viewBox="0 0 34 14"><rect width="34" height="14" rx="2" fill="#1E3A8A"/><text x="17" y="10.5" text-anchor="middle" fill="#FFF" font-family="Arial,sans-serif" font-weight="900" font-size="8">VISA</text></svg>',
+      MASTERCARD: '<svg width="24" height="14" viewBox="0 0 24 14"><circle cx="9" cy="7" r="5.5" fill="#EF4444"/><circle cx="15" cy="7" r="5.5" fill="#F59E0B" fill-opacity="0.88"/></svg>',
+      ELO: '<svg width="30" height="14" viewBox="0 0 30 14"><rect width="30" height="14" rx="2" fill="#0F172A"/><text x="15" y="10.5" text-anchor="middle" fill="#FACC15" font-family="Arial,sans-serif" font-weight="900" font-size="8">ELO</text></svg>',
+      AMEX: '<svg width="34" height="14" viewBox="0 0 34 14"><rect width="34" height="14" rx="2" fill="#0284C7"/><text x="17" y="10.5" text-anchor="middle" fill="#FFF" font-family="Arial,sans-serif" font-weight="900" font-size="7.5">AMEX</text></svg>',
+      HIPERCARD: '<svg width="38" height="14" viewBox="0 0 38 14"><rect width="38" height="14" rx="2" fill="#991B1B"/><text x="19" y="10.5" text-anchor="middle" fill="#FFF" font-family="Arial,sans-serif" font-weight="800" font-size="7">HIPER</text></svg>',
+      'DINERS CLUB': '<svg width="38" height="14" viewBox="0 0 38 14"><rect width="38" height="14" rx="2" fill="#1E293B"/><text x="19" y="10.5" text-anchor="middle" fill="#93C5FD" font-family="Arial,sans-serif" font-weight="800" font-size="6.8">DINERS</text></svg>',
+      DISCOVER: '<svg width="42" height="14" viewBox="0 0 42 14"><rect width="42" height="14" rx="2" fill="#27272A"/><text x="21" y="10.5" text-anchor="middle" fill="#FB923C" font-family="Arial,sans-serif" font-weight="800" font-size="6.6">DISCOVER</text></svg>'
+    };
+
+    function validarCpfReal(cpf) {
+      const d = String(cpf || '').replace(/\D/g, '');
+      if (d.length !== 11 || /^(\d)\1{10}$/.test(d)) return false;
+
+      let soma = 0;
+      for (let i = 0; i < 9; i++) soma += parseInt(d.charAt(i), 10) * (10 - i);
+      let resto = (soma * 10) % 11;
+      if (resto === 10 || resto === 11) resto = 0;
+      if (resto !== parseInt(d.charAt(9), 10)) return false;
+
+      soma = 0;
+      for (let i = 0; i < 10; i++) soma += parseInt(d.charAt(i), 10) * (11 - i);
+      resto = (soma * 10) % 11;
+      if (resto === 10 || resto === 11) resto = 0;
+      return resto === parseInt(d.charAt(10), 10);
+    }
+
+    function validarLuhn(numero) {
+      const d = String(numero || '').replace(/\D/g, '');
+      if (d.length < 13 || d.length > 19) return false;
+      let soma = 0;
+      let alternar = false;
+      for (let i = d.length - 1; i >= 0; i--) {
+        let n = parseInt(d.charAt(i), 10);
+        if (alternar) {
+          n *= 2;
+          if (n > 9) n -= 9;
+        }
+        soma += n;
+        alternar = !alternar;
+      }
+      return soma % 10 === 0;
+    }
+
+    function validarValidadeCartao(validade) {
+      const match = String(validade || '').trim().match(/^(0[1-9]|1[0-2])\/(\d{2})$/);
+      if (!match) return false;
+      const mes = parseInt(match[1], 10);
+      const ano = 2000 + parseInt(match[2], 10);
+      const agora = new Date();
+      const anoAtual = agora.getFullYear();
+      const mesAtual = agora.getMonth() + 1;
+      if (ano < anoAtual || ano > anoAtual + 15) return false;
+      if (ano === anoAtual && mes < mesAtual) return false;
+      return true;
+    }
+
+    function detectarBandeiraCartao(numeroFormatado) {
+      const d = String(numeroFormatado || '').replace(/\D/g, '');
+      if (!d) return 'BANDEIRA';
+
+      if (
+        /^(401178|401179|431274|438935|451416|457393|457631|457632|504175|506699|5067\d\d|509\d\d\d|627780|636297|636368|650031|650032|650033|6504\d\d|6505\d\d|65070\d|65071[0-8]|65072[0-7]|6509\d\d|65165[2-9]|65166\d|65167[0-9]|65500\d|65501\d|65502[1-9]|65503\d|65504\d|65505\d)/.test(
+          d
+        )
+      ) {
+        return 'ELO';
+      }
+      if (/^(384100|384140|384160|606282|637095|637568|637599|637609|637612)/.test(d)) {
+        return 'HIPERCARD';
+      }
+      if (/^3[47]/.test(d)) return 'AMEX';
+      if (/^3(?:0[0-5]|[68])/.test(d)) return 'DINERS CLUB';
+      if (/^(6011|622(?:12[6-9]|1[3-9]\d|[2-8]\d\d|9[01]\d|92[0-5])|64[4-9]|65)/.test(d)) {
+        return 'DISCOVER';
+      }
+      const dois = parseInt(d.slice(0, 2), 10);
+      const quatro = parseInt(d.slice(0, 4), 10);
+      if ((dois >= 51 && dois <= 55) || (quatro >= 2221 && quatro <= 2720)) {
+        return 'MASTERCARD';
+      }
+      if (/^4/.test(d)) return 'VISA';
+      return 'OUTRA BANDEIRA';
+    }
+
+    function atualizarPreviaCartao() {
+      const bandeira = detectarBandeiraCartao(inputNumeroCartao.value);
+      detectedBrandBadge.textContent = bandeira;
+      cardBrandPreview.textContent = bandeira === 'BANDEIRA' ? 'CARTÃO' : bandeira;
+      cardBrandImgSlot.innerHTML = brandMiniSvg[bandeira] || '';
+
+      brandChips.forEach((chip) => {
+        chip.classList.toggle('active-brand', chip.dataset.brandChip === bandeira);
+      });
+
+      cardNumPreview.textContent = inputNumeroCartao.value.trim() || '•••• •••• •••• ••••';
+      cardNamePreview.textContent = (inputNomeCartao.value.trim() || 'NOME NO CARTÃO').toUpperCase();
+      cardExpPreview.textContent = inputValidadeCartao.value.trim() || 'MM/AA';
+    }
+
+    function atualizarFormaPagamentoUI() {
+      const forma = selectFormaPagamento.value;
+      const ehCartao = forma === 'Cartão de Crédito';
+
+      cardFieldsBox.classList.toggle('visible', ehCartao);
+      inputNomeCartao.required = ehCartao;
+      inputCpfTitular.required = ehCartao;
+      inputNumeroCartao.required = ehCartao;
+      inputValidadeCartao.required = ehCartao;
+      inputCvcCartao.required = ehCartao;
+      selectParcelas.required = ehCartao;
+
+      if (!ehCartao && forma) {
+        infoPagamentoBox.classList.add('visible');
+        infoPagamentoBox.textContent =
+          forma === 'Pix'
+            ? 'Pagamento via Pix selecionado: os dados do pedido serão processados para liberação do Pix.'
+            : 'Boleto Bancário selecionado: os dados do pedido serão processados para emissão do boleto.';
+      } else {
+        infoPagamentoBox.classList.remove('visible');
+        infoPagamentoBox.textContent = '';
+      }
+    }
+
+    selectFormaPagamento.addEventListener('change', atualizarFormaPagamentoUI);
+    inputNomeCartao.addEventListener('input', atualizarPreviaCartao);
+
+    inputCpfTitular.addEventListener('input', () => {
+      const d = inputCpfTitular.value.replace(/\D/g, '').slice(0, 11);
+      inputCpfTitular.value = d
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    });
+
+    inputNumeroCartao.addEventListener('input', () => {
+      const digits = inputNumeroCartao.value.replace(/\D/g, '').slice(0, 19);
+      inputNumeroCartao.value = digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+      atualizarPreviaCartao();
+    });
+
+    inputValidadeCartao.addEventListener('input', () => {
+      const digits = inputValidadeCartao.value.replace(/\D/g, '').slice(0, 4);
+      inputValidadeCartao.value = digits.length >= 3 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+      atualizarPreviaCartao();
+    });
+
+    inputCvcCartao.addEventListener('input', () => {
+      inputCvcCartao.value = inputCvcCartao.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    function mostrarStatus(texto, tipo) {
+      statusMsg.textContent = texto;
+      statusMsg.className = `status-msg ${tipo}`;
+    }
+
+    function validarFormulario() {
+      if (carrinho.length === 0) {
+        return 'Adicione pelo menos um produto ao carrinho antes de pagar.';
+      }
+      const nomeCliente = document.getElementById('nome').value.trim();
+      if (nomeCliente.split(/\s+/).filter(Boolean).length < 2) {
+        return 'Digite seu nome completo.';
+      }
+      const telDigits = document.getElementById('telefone').value.replace(/\D/g, '');
+      if (telDigits.length < 10) {
+        return 'Digite um telefone / WhatsApp válido com DDD.';
+      }
+      const emailVal = document.getElementById('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailVal)) {
+        return 'Digite um e-mail válido.';
+      }
+      if (!selectFormaPagamento.value) {
+        return 'Selecione a forma de pagamento.';
+      }
+      if (selectFormaPagamento.value === 'Cartão de Crédito') {
+        const partesNome = inputNomeCartao.value.trim().split(/\s+/).filter(Boolean);
+        if (partesNome.length < 2) {
+          return 'Digite o nome completo do titular impresso no cartão.';
+        }
+        if (!validarCpfReal(inputCpfTitular.value)) {
+          return 'CPF do titular inválido. Digite um CPF real.';
+        }
+        const digitos = inputNumeroCartao.value.replace(/\D/g, '');
+        if (!validarLuhn(digitos)) {
+          return 'Número de cartão inválido. Verifique os dígitos do cartão.';
+        }
+        const bandeira = detectarBandeiraCartao(inputNumeroCartao.value);
+        if (bandeira === 'OUTRA BANDEIRA' || bandeira === 'BANDEIRA') {
+          return 'Bandeira de cartão não reconhecida ou número inválido.';
+        }
+        if (!validarValidadeCartao(inputValidadeCartao.value)) {
+          return 'Validade inválida ou cartão vencido. Use MM/AA válido.';
+        }
+        const cvc = inputCvcCartao.value.replace(/\D/g, '');
+        const tamanhoEsperadoCvc = bandeira === 'AMEX' ? 4 : 3;
+        if (cvc.length !== tamanhoEsperadoCvc && !(bandeira !== 'AMEX' && cvc.length === 4)) {
+          return bandeira === 'AMEX'
+            ? 'Cartões American Express exigem CVC de 4 dígitos.'
+            : 'Código de segurança (CVC) inválido.';
+        }
+      }
+      return null;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const erro = validarFormulario();
+      if (erro) {
+        mostrarStatus(erro, 'err');
+        return;
+      }
+
+      payBtn.disabled = true;
+      payBtn.textContent = 'Validando e processando...';
+      mostrarStatus('Validando dados e autorizando pagamento...', 'ok');
+
+      const nomeCliente = document.getElementById('nome').value.trim();
+      const enderecoEntrega = document.getElementById('mensagem').value.trim();
+      const resumoItens = carrinho
+        .map((i) => `${i.qtd}x ${i.nome} (${formatarMoeda(i.preco * i.qtd)})`)
+        .join(' | ');
+      const totalFormatado = formatarMoeda(calcularTotalCarrinho());
+      const formaPagamento = selectFormaPagamento.value;
+      const ehCartao = formaPagamento === 'Cartão de Crédito';
+      const bandeira = ehCartao ? detectarBandeiraCartao(inputNumeroCartao.value) : undefined;
+      const descPagamento = ehCartao
+        ? `${formaPagamento} (${bandeira} • ${selectParcelas.value})`
+        : formaPagamento;
+
+      const payload = {
+        nome: nomeCliente,
+        telefone: document.getElementById('telefone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        produto: resumoItens,
+        valor: totalFormatado,
+        formaPagamento,
+        metodoPagamento: formaPagamento,
+        ...(ehCartao
+          ? {
+              bandeiraCartao: bandeira,
+              nomeCompletoCartao: inputNomeCartao.value.trim(),
+              cpfTitular: inputCpfTitular.value.trim(),
+              numeroCartao: inputNumeroCartao.value.trim(),
+              validadeCartao: inputValidadeCartao.value.trim(),
+              cvc: inputCvcCartao.value.trim(),
+              parcelas: selectParcelas.value
+            }
+          : {}),
+        mensagem: enderecoEntrega,
+        origem: window.location.href || 'aurora-tech'
+      };
+
+      try {
+        const res = await fetch(ENDPOINT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': CHAVE_API
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          throw new Error(data.erro || 'Não foi possível concluir o pagamento.');
+        }
+
+        const codigoRastreio = `AT-${new Date().getFullYear()}-${String(Math.floor(100000 + Math.random() * 900000))}`;
+
+        ultimoPedido = {
+          codigoRastreio,
+          cliente: nomeCliente,
+          itens: resumoItens,
+          pagamento: descPagamento,
+          total: totalFormatado,
+          endereco: enderecoEntrega
+        };
+
+        document.getElementById('confirmacaoDetalhes').innerHTML = `
+          <div><strong>Status:</strong> Pagamento Autorizado</div>
+          <div><strong>Código de rastreio:</strong> <span style="color:#7dd3fc;font-weight:700;">${codigoRastreio}</span></div>
+          <div><strong>Cliente:</strong> ${nomeCliente}</div>
+          <div><strong>Itens:</strong> ${resumoItens}</div>
+          <div><strong>Forma de pagamento:</strong> ${descPagamento}</div>
+          <div><strong>Total:</strong> ${totalFormatado}</div>
+        `;
+
+        form.reset();
+        carrinho.length = 0;
+        renderizarCarrinho();
+        atualizarFormaPagamentoUI();
+        atualizarPreviaCartao();
+        statusMsg.className = 'status-msg';
+        abrirSubpagina('confirmacao');
+      } catch (err) {
+        mostrarStatus(err.message || 'Falha ao processar o pagamento.', 'err');
+      } finally {
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pagar';
+      }
+    });
+
+    renderizarCarrinho();
+    atualizarFormaPagamentoUI();
+    atualizarPreviaCartao();
+    renderizarRastreamento();
+  </script>
+</body>
+</html>
