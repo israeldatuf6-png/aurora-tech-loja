@@ -29,6 +29,10 @@ app.use(
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname)));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'captura.html'));
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ ok: true, servico: 'aurora-tech-captura' });
 });
