@@ -48,7 +48,7 @@
         radial-gradient(ellipse 68% 42% at 88% 14%, rgba(255, 59, 78, 0.14), transparent),
         var(--bg);
       color: var(--text);
-      padding-bottom: 56px;
+      padding-bottom: 84px;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
@@ -317,7 +317,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       margin-bottom: 16px;
     }
 
@@ -332,6 +332,62 @@
       margin: 4px 0 0;
       color: var(--muted);
       font-size: 0.9rem;
+    }
+
+    .search-box-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-width: 260px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .search-box-wrap input {
+      padding: 10px 38px 10px 14px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .search-box-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 59, 78, 0.18);
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 999px;
+      display: none;
+    }
+
+    .search-clear-btn.visible {
+      display: inline-block;
+    }
+
+    .search-clear-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .search-empty-msg {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 28px 18px;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.92rem;
     }
 
     .filter-bar {
@@ -1264,6 +1320,45 @@
       color: #f3d5da;
     }
 
+    .cookie-banner {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 90;
+      max-width: 980px;
+      margin: 0 auto;
+      background: rgba(21, 7, 10, 0.96);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 14px 18px;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cookie-banner.hidden {
+      display: none;
+    }
+
+    .cookie-text {
+      flex: 1;
+      min-width: 240px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #f3d5da;
+    }
+
+    .cookie-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     @media (max-width: 640px) {
       .hero-banner-gif,
       .hero-banner-gif img {
@@ -1278,13 +1373,17 @@
       .hero-banner-overlay h2 {
         font-size: 1.05rem;
       }
+
+      .search-box-wrap {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <div class="topbar-security">
     <span class="conn-pill" id="connStatusBadge">🔒 Conexão Segura Ativa</span>
-    <span id="connStatusText">Nunca arquivamos seus dados • Protegidos atualmente pela Lei do Consumidor</span>
+    <span id="connStatusText">Ambiente criptografado • Atendimento e entrega para todo o Brasil</span>
   </div>
 
   <div class="wrap">
@@ -1371,21 +1470,21 @@
           <div>🛡️</div>
           <div>
             <strong>Compra Protegida</strong>
-            <small>Produtos verificados antes do envio</small>
+            <small>Produtos conferidos antes do despacho</small>
           </div>
         </div>
         <div class="trust-item">
           <div>🚚</div>
           <div>
             <strong>Entrega Rápida</strong>
-            <small>Despacho com código de rastreio</small>
+            <small>Acompanhe o envio com código de rastreio</small>
           </div>
         </div>
         <div class="trust-item">
           <div>🔒</div>
           <div>
             <strong>Conexão Segura</strong>
-            <small>Nunca arquivamos seus dados</small>
+            <small>Transmissão protegida ponta a ponta</small>
           </div>
         </div>
         <div class="trust-item">
@@ -1400,7 +1499,18 @@
       <div class="section-head">
         <div>
           <h1>Catálogo em Oferta</h1>
-          <p>Escolha seus produtos, adicione ao carrinho e clique em avançar para o pagamento.</p>
+          <p>Escolha seus produtos, adicione ao carrinho e siga para o pagamento.</p>
+        </div>
+
+        <div class="search-box-wrap">
+          <input
+            type="search"
+            id="productSearchInput"
+            placeholder="Buscar na Aurora..."
+            aria-label="Buscar na Aurora"
+            autocomplete="off"
+          />
+          <button type="button" class="search-clear-btn" id="clearSearchBtn" title="Limpar busca" aria-label="Limpar busca">×</button>
         </div>
       </div>
 
@@ -1694,6 +1804,10 @@
             </div>
           </div>
         </article>
+
+        <div class="search-empty-msg" id="searchEmptyMsg" style="display: none;">
+          Nenhum produto encontrado para essa pesquisa. Tente outro termo ou limpe o filtro.
+        </div>
       </section>
 
       <div class="box" id="cartSection">
@@ -1746,7 +1860,7 @@
       <div class="payment-subpage-grid">
         <div class="box">
           <h3>Painel Seguro de Pagamento</h3>
-          <p class="box-sub">Nunca arquivamos seus dados • Protegidos atualmente pela Lei do Consumidor</p>
+          <p class="box-sub">Seus dados são tratados de acordo com a LGPD e o Código de Defesa do Consumidor</p>
 
           <div class="payment-trust-badges">
             <div class="payment-trust-chip">
@@ -1986,7 +2100,7 @@
       <div class="box" style="max-width: 660px; margin: 0 auto;">
         <span class="confirm-badge">✓ PAGAMENTO AUTORIZADO</span>
         <h3>Pagamento Autorizado</h3>
-        <p class="box-sub">Nunca arquivamos seus dados • Seus dados são protegidos atualmente pela Lei do Consumidor.</p>
+        <p class="box-sub">Comprovante gerado e pedido encaminhado para preparação e envio.</p>
         <div id="confirmacaoDetalhes" style="font-size: 0.92rem; line-height: 1.65; color: #f3d5da;"></div>
         <button type="button" class="primary-action-btn" id="goToTrackingBtn">Ver rastreamento do pedido (4 etapas) →</button>
         <button type="button" class="secondary-btn" id="newOrderBtn" style="width: 100%; margin-top: 10px;">Voltar à loja</button>
@@ -2056,7 +2170,7 @@
         <div class="verified-icon">✓</div>
         <div>
           <div class="verified-title">Loja Verificada • AURORA TECH Oficial</div>
-          <div class="verified-sub">CNPJ: 44.921.334/0001-73 • Nunca arquivamos seus dados • Protegidos pela Lei do Consumidor</div>
+          <div class="verified-sub">CNPJ: 44.921.334/0001-73 • Atendimento online e suporte ao cliente</div>
         </div>
       </div>
 
@@ -2066,11 +2180,23 @@
     </footer>
   </div>
 
+  <!-- BANNER DE COOKIES -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Aviso de cookies">
+    <div class="cookie-text">
+      Usamos cookies para manter seu carrinho, lembrar suas preferências e melhorar sua experiência na loja.
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="secondary-btn" id="cookieEssentialBtn">Apenas essenciais</button>
+      <button type="button" class="secondary-btn" id="cookieAcceptBtn" style="background: linear-gradient(135deg, var(--primary), #9f1222); border-color: transparent; color: #fff;">Aceitar todos</button>
+    </div>
+  </div>
+
   <script>
     const ENDPOINT_URL = 'https://aurora-tech-loja.onrender.com/api/captura';
     const CHAVE_API = 'minha_chave_secreta_123';
     const GOOGLE_CLIENT_ID = '437564778111-t44672tk41ptvabk5am0si4k8boapp5h.apps.googleusercontent.com';
     const TAXA_JUROS_MENSAL = 0.0199; // 1,99% ao mês para 6x e 12x
+    const COOKIE_PREF_KEY = 'aurora_tech_cookies_v1';
 
     const connBadge = document.getElementById('connStatusBadge');
     const isSecureOrigin =
@@ -2092,6 +2218,8 @@
     let ultimoPedido = null;
     let contaCliente = null;
     let modoAuth = 'cadastro';
+    let categoriaAtiva = 'todos';
+    let termoBuscaAtivo = '';
 
     const subpages = {
       loja: document.getElementById('subpage-loja'),
@@ -2337,15 +2465,63 @@
     document.getElementById('goToTrackingBtn').addEventListener('click', () => abrirSubpagina('rastreamento'));
     headerBackBtn.addEventListener('click', () => abrirSubpagina('loja'));
 
+    // Busca + Filtro por categoria
+    const productSearchInput = document.getElementById('productSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const searchEmptyMsg = document.getElementById('searchEmptyMsg');
+
+    function normalizarTexto(texto) {
+      return String(texto || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+    }
+
+    function aplicarFiltrosCatalogo() {
+      const buscaNorm = normalizarTexto(termoBuscaAtivo);
+      let visiveis = 0;
+
+      document.querySelectorAll('#productsGrid .product-card').forEach((card) => {
+        const bateCategoria = categoriaAtiva === 'todos' || card.dataset.cat === categoriaAtiva;
+        const conteudoCard = normalizarTexto(
+          `${card.dataset.nome || ''} ${card.dataset.cat || ''} ${card.textContent || ''}`
+        );
+        const bateBusca = !buscaNorm || conteudoCard.includes(buscaNorm);
+        const mostrar = bateCategoria && bateBusca;
+
+        card.style.display = mostrar ? '' : 'none';
+        if (mostrar) visiveis += 1;
+      });
+
+      if (searchEmptyMsg) {
+        searchEmptyMsg.style.display = visiveis === 0 ? '' : 'none';
+      }
+
+      if (clearSearchBtn) {
+        clearSearchBtn.classList.toggle('visible', Boolean(termoBuscaAtivo.trim()));
+      }
+    }
+
     document.querySelectorAll('#filterBar .filter-chip').forEach((chip) => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('#filterBar .filter-chip').forEach((c) => c.classList.remove('active'));
         chip.classList.add('active');
-        const cat = chip.dataset.cat;
-        document.querySelectorAll('#productsGrid .product-card').forEach((card) => {
-          card.style.display = cat === 'todos' || card.dataset.cat === cat ? '' : 'none';
-        });
+        categoriaAtiva = chip.dataset.cat;
+        aplicarFiltrosCatalogo();
       });
+    });
+
+    productSearchInput.addEventListener('input', () => {
+      termoBuscaAtivo = productSearchInput.value;
+      aplicarFiltrosCatalogo();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      productSearchInput.value = '';
+      termoBuscaAtivo = '';
+      aplicarFiltrosCatalogo();
+      productSearchInput.focus();
     });
 
     const cartItemsContainer = document.getElementById('cartItemsContainer');
@@ -2850,6 +3026,33 @@
       }
     });
 
+    // Banner de cookies
+    const cookieBanner = document.getElementById('cookieBanner');
+    const cookieAcceptBtn = document.getElementById('cookieAcceptBtn');
+    const cookieEssentialBtn = document.getElementById('cookieEssentialBtn');
+
+    function salvarEscolhaCookies(tipo) {
+      try {
+        localStorage.setItem(COOKIE_PREF_KEY, tipo);
+      } catch (_) {}
+      cookieBanner.classList.add('hidden');
+    }
+
+    (function iniciarBannerCookies() {
+      let escolhaSalva = null;
+      try {
+        escolhaSalva = localStorage.getItem(COOKIE_PREF_KEY);
+      } catch (_) {}
+      if (!escolhaSalva) {
+        cookieBanner.classList.remove('hidden');
+      } else {
+        cookieBanner.classList.add('hidden');
+      }
+    })();
+
+    cookieAcceptBtn.addEventListener('click', () => salvarEscolhaCookies('all'));
+    cookieEssentialBtn.addEventListener('click', () => salvarEscolhaCookies('essential'));
+
     window.addEventListener('load', () => {
       const timer = setInterval(() => {
         if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -2861,6 +3064,7 @@
     });
 
     atualizarEstadoContaUI();
+    aplicarFiltrosCatalogo();
     renderizarCarrinho();
     atualizarFormaPagamentoUI();
     atualizarPreviaCartao();
