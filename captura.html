@@ -168,6 +168,26 @@
       gap: 10px;
     }
 
+    .account-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .account-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(225, 29, 46, 0.16);
+    }
+
     .cart-pill {
       display: inline-flex;
       align-items: center;
@@ -192,6 +212,72 @@
 
     .cart-pill:active {
       transform: scale(0.97);
+    }
+
+    .auth-box {
+      margin-bottom: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .auth-tabs {
+      display: inline-flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .auth-tab-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .auth-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), #9f1222);
+      border-color: transparent;
+      color: #ffffff;
+    }
+
+    .auth-inline-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .auth-inline-form input {
+      width: auto;
+      min-width: 185px;
+      padding: 9px 12px;
+      font-size: 0.85rem;
+    }
+
+    .google-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #ffffff;
+      color: #111827;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .google-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
     }
 
     .subpage {
@@ -1219,12 +1305,54 @@
       </div>
 
       <div class="header-actions">
+        <button type="button" class="account-btn" id="openAccountBoxBtn">👤 <span id="headerAccountLabel">Entrar / Cadastrar</span></button>
         <button type="button" class="secondary-btn" id="headerBackBtn" style="display: none;">← Voltar à loja</button>
         <button type="button" class="cart-pill" id="cartPillBtn">
           Carrinho: <span id="cartCount">0</span> item(ns) • <span id="cartHeaderTotal">R$ 0,00</span>
         </button>
       </div>
     </header>
+
+    <!-- CADASTRO / LOGIN DO CLIENTE & GOOGLE -->
+    <section class="box auth-box" id="customerAuthSection" aria-label="Cadastro e login do cliente">
+      <div style="flex: 1; min-width: 260px;">
+        <div id="authGuestView">
+          <div class="auth-tabs">
+            <button type="button" class="auth-tab-btn active" data-auth-tab="cadastro">Cadastrar conta</button>
+            <button type="button" class="auth-tab-btn" data-auth-tab="login">Entrar</button>
+          </div>
+
+          <form class="auth-inline-form" id="authLocalForm">
+            <input type="text" id="authNome" placeholder="Seu nome completo" required />
+            <input type="email" id="authEmail" placeholder="Seu e-mail" required />
+            <input type="tel" id="authTelefone" placeholder="(85) 99999-9999" />
+            <button type="submit" class="secondary-btn" id="authSubmitBtn">Criar conta</button>
+          </form>
+        </div>
+
+        <div id="authLoggedView" style="display: none;">
+          <div style="font-weight: 800; font-size: 0.96rem; color: #ff9aa3;">
+            ✓ Conectado como <span id="loggedUserName">Cliente</span> (<span id="loggedUserMethod">Conta</span>)
+          </div>
+          <div style="font-size: 0.82rem; color: var(--muted); margin-top: 2px;">
+            E-mail: <span id="loggedUserEmail">-</span> • Dados preenchidos automaticamente no checkout.
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <button type="button" class="google-btn" id="googleLoginBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.5-1.14 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.54-5.17 3.54-8.76z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.01c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.26v3.1C3.23 21.2 7.3 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.62H1.26A11.97 11.97 0 0 0 0 12c0 1.94.46 3.77 1.26 5.38l4.02-3.1z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.3 0 3.23 2.8 1.26 6.62l4.02 3.1c.95-2.85 3.6-4.97 6.72-4.97z"/>
+          </svg>
+          Continuar com Google
+        </button>
+        <button type="button" class="secondary-btn" id="logoutAccountBtn" style="display: none;">Sair</button>
+      </div>
+    </section>
 
     <!-- SUBPÁGINA 1: LOJA & CARRINHO -->
     <div class="subpage active" id="subpage-loja">
@@ -1928,6 +2056,8 @@
 
     const carrinho = [];
     let ultimoPedido = null;
+    let contaCliente = null;
+    let modoAuth = 'cadastro';
 
     const subpages = {
       loja: document.getElementById('subpage-loja'),
@@ -1974,7 +2104,6 @@
         };
       }
 
-      // Tabela Price simplificada com taxa mensal de 1,99% a.m.
       const i = TAXA_JUROS_MENSAL;
       const fator = Math.pow(1 + i, n);
       const valorParcela = base > 0 ? (base * (i * fator)) / (fator - 1) : 0;
@@ -1992,6 +2121,112 @@
       };
     }
 
+    function preencherCamposCliente(cliente) {
+      if (!cliente) return;
+      const inputNome = document.getElementById('nome');
+      const inputEmail = document.getElementById('email');
+      const inputTelefone = document.getElementById('telefone');
+
+      if (cliente.nome && !inputNome.value) inputNome.value = cliente.nome;
+      if (cliente.email && !inputEmail.value) inputEmail.value = cliente.email;
+      if (cliente.telefone && !inputTelefone.value) inputTelefone.value = cliente.telefone;
+    }
+
+    function atualizarEstadoContaUI() {
+      const guestView = document.getElementById('authGuestView');
+      const loggedView = document.getElementById('authLoggedView');
+      const logoutBtn = document.getElementById('logoutAccountBtn');
+      const headerAccountLabel = document.getElementById('headerAccountLabel');
+
+      if (contaCliente) {
+        guestView.style.display = 'none';
+        loggedView.style.display = 'block';
+        logoutBtn.style.display = 'inline-flex';
+        document.getElementById('loggedUserName').textContent = contaCliente.nome;
+        document.getElementById('loggedUserMethod').textContent = contaCliente.provedor;
+        document.getElementById('loggedUserEmail').textContent = contaCliente.email;
+        headerAccountLabel.textContent = contaCliente.nome.split(' ')[0];
+        preencherCamposCliente(contaCliente);
+      } else {
+        guestView.style.display = 'block';
+        loggedView.style.display = 'none';
+        logoutBtn.style.display = 'none';
+        headerAccountLabel.textContent = 'Entrar / Cadastrar';
+      }
+    }
+
+    document.querySelectorAll('.auth-tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.auth-tab-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        modoAuth = btn.dataset.authTab;
+        const nomeInput = document.getElementById('authNome');
+        const telInput = document.getElementById('authTelefone');
+        const submitBtn = document.getElementById('authSubmitBtn');
+        if (modoAuth === 'login') {
+          nomeInput.required = false;
+          nomeInput.placeholder = 'Nome (opcional no login)';
+          telInput.style.display = 'none';
+          submitBtn.textContent = 'Entrar';
+        } else {
+          nomeInput.required = true;
+          nomeInput.placeholder = 'Seu nome completo';
+          telInput.style.display = '';
+          submitBtn.textContent = 'Criar conta';
+        }
+      });
+    });
+
+    document.getElementById('authLocalForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value.trim();
+      const nomeDigitado = document.getElementById('authNome').value.trim();
+      const telefone = document.getElementById('authTelefone').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        alert('Digite um e-mail válido.');
+        return;
+      }
+      const nomeFinal = nomeDigitado || email.split('@')[0];
+      contaCliente = {
+        nome: nomeFinal,
+        email,
+        telefone,
+        provedor: modoAuth === 'login' ? 'Conta Aurora Tech' : 'Cadastro Rápido'
+      };
+      atualizarEstadoContaUI();
+    });
+
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      const emailInformado = window.prompt('Digite seu e-mail Google para continuar na AURORA TECH:', 'cliente.google@gmail.com');
+      if (!emailInformado) return;
+      const emailLimpo = emailInformado.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailLimpo)) {
+        alert('Digite um endereço de e-mail Google válido.');
+        return;
+      }
+      const nomeSugerido = emailLimpo
+        .split('@')[0]
+        .replace(/[._-]+/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+
+      contaCliente = {
+        nome: nomeSugerido || 'Cliente Google',
+        email: emailLimpo,
+        telefone: '',
+        provedor: 'Google'
+      };
+      atualizarEstadoContaUI();
+    });
+
+    document.getElementById('logoutAccountBtn').addEventListener('click', () => {
+      contaCliente = null;
+      atualizarEstadoContaUI();
+    });
+
+    document.getElementById('openAccountBoxBtn').addEventListener('click', () => {
+      document.getElementById('customerAuthSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
     function abrirSubpagina(nome) {
       if (nome === 'rastreamento' && !ultimoPedido) {
         nome = 'loja';
@@ -2001,6 +2236,9 @@
         el.classList.toggle('active', key === nome);
       });
       headerBackBtn.style.display = nome === 'loja' ? 'none' : 'inline-flex';
+      if (nome === 'pagamento') {
+        preencherCamposCliente(contaCliente);
+      }
       renderizarResumoPagamento();
       renderizarRastreamento();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2454,6 +2692,7 @@
         nome: nomeCliente,
         telefone: document.getElementById('telefone').value.trim(),
         email: document.getElementById('email').value.trim(),
+        contaCliente: contaCliente ? `${contaCliente.nome} (${contaCliente.provedor})` : 'Visitante',
         produto: resumoItens,
         valor: totalFormatado,
         formaPagamento,
@@ -2510,6 +2749,7 @@
         `;
 
         form.reset();
+        preencherCamposCliente(contaCliente);
         carrinho.length = 0;
         renderizarCarrinho();
         atualizarFormaPagamentoUI();
@@ -2524,6 +2764,7 @@
       }
     });
 
+    atualizarEstadoContaUI();
     renderizarCarrinho();
     atualizarFormaPagamentoUI();
     atualizarPreviaCartao();
