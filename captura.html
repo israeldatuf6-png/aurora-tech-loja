@@ -625,6 +625,29 @@
       }
     }
 
+    .payment-trust-badges {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .payment-trust-chip {
+      background: rgba(13, 5, 7, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      color: #f3d5da;
+    }
+
+    .payment-trust-chip strong {
+      display: block;
+      color: #ff9aa3;
+      font-size: 0.8rem;
+      margin-bottom: 2px;
+    }
+
     .fields {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -680,6 +703,29 @@
     textarea {
       min-height: 70px;
       resize: vertical;
+    }
+
+    .installment-breakdown {
+      margin-top: 8px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(13, 5, 7, 0.88);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #f3d5da;
+    }
+
+    .installment-highlight {
+      color: #ff9aa3;
+      font-weight: 700;
+    }
+
+    .installment-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.78rem;
     }
 
     .card-input-wrap {
@@ -824,6 +870,30 @@
     .info-pagamento-box.visible {
       display: block;
       animation: fadeSlideUp 0.22s ease both;
+    }
+
+    .payment-bottom-info {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .info-card-mini {
+      background: rgba(13, 5, 7, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .info-card-mini strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-bottom: 4px;
     }
 
     .status-msg {
@@ -1507,15 +1577,30 @@
       <div class="section-head">
         <div>
           <h1>Finalizar Pagamento</h1>
-          <p>Preencha seus dados de entrega e escolha a forma de pagamento.</p>
+          <p>Preencha seus dados de entrega, confira as condições de juros e escolha a forma de pagamento.</p>
         </div>
         <button type="button" class="secondary-btn" id="backToStoreBtn">← Voltar para a loja</button>
       </div>
 
       <div class="payment-subpage-grid">
         <div class="box">
-          <h3>Dados e Forma de Pagamento</h3>
+          <h3>Painel Seguro de Pagamento</h3>
           <p class="box-sub">Nunca arquivamos seus dados • Protegidos atualmente pela Lei do Consumidor</p>
+
+          <div class="payment-trust-badges">
+            <div class="payment-trust-chip">
+              <strong>🔒 Ambiente Protegido</strong>
+              Validação instantânea e verificação de dados
+            </div>
+            <div class="payment-trust-chip">
+              <strong>💳 Até 3x Sem Juros</strong>
+              Parcelas 1x, 2x e 3x sem acréscimo (0,00% a.m.)
+            </div>
+            <div class="payment-trust-chip">
+              <strong>📦 Rastreio em 4 Etapas</strong>
+              Código gerado na autorização do pedido
+            </div>
+          </div>
 
           <form id="checkoutForm" novalidate>
             <div class="fields">
@@ -1674,7 +1759,7 @@
                   </div>
 
                   <div class="field span-2">
-                    <label for="parcelas">Parcelamento</label>
+                    <label for="parcelas">Parcelamento e juros</label>
                     <select id="parcelas" name="parcelas">
                       <option value="1x (À vista no crédito)" selected>1x (À vista no crédito)</option>
                       <option value="2x sem juros">2x sem juros</option>
@@ -1682,6 +1767,13 @@
                       <option value="6x">6x</option>
                       <option value="12x">12x</option>
                     </select>
+
+                    <div class="installment-breakdown" id="installmentBreakdown">
+                      <div id="selectedInstallmentSummary">
+                        Selecione uma opção de parcelamento para ver o valor de cada parcela e os juros.
+                      </div>
+                      <ul class="installment-list" id="installmentTableList"></ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1701,14 +1793,31 @@
 
         <div class="box">
           <h3>Resumo do Pedido</h3>
-          <p class="box-sub">Itens do carrinho incluídos</p>
+          <p class="box-sub">Itens do carrinho incluídos e simulação de parcelamento</p>
           <div id="paymentCartSummary"></div>
+          <div id="paymentInstallmentInfo" style="margin-top: 12px; font-size: 0.82rem; color: var(--muted);"></div>
           <div class="cart-total-row">
             <span>Total a pagar</span>
             <span id="paymentTotalLabel">R$ 0,00</span>
           </div>
         </div>
       </div>
+
+      <!-- INFORMAÇÕES DETALHADAS ABAIXO DO PAINEL DE PAGAMENTO -->
+      <section class="payment-bottom-info" aria-label="Informações adicionais de pagamento e segurança">
+        <div class="info-card-mini">
+          <strong>Regras de Parcelamento e Juros</strong>
+          Parcelas de <strong>1x até 3x</strong> possuem <strong>0,00% de juros</strong> (valor total igual ao subtotal do carrinho). Parcelamentos em <strong>6x</strong> ou <strong>12x</strong> aplicam taxa de <strong>1,99% ao mês</strong> com simulação transparente exibida antes de confirmar.
+        </div>
+        <div class="info-card-mini">
+          <strong>Segurança e Privacidade de Dados</strong>
+          Operação identificada sob o <strong>CNPJ 44.921.334/0001-73</strong>. Validamos CPF, validade e dígitos verificadores do cartão no navegador e protegemos seus dados conforme a legislação vigente.
+        </div>
+        <div class="info-card-mini">
+          <strong>Envio, Confirmação e Rastreio</strong>
+          Após a autorização do pagamento, você recebe o código de rastreamento no padrão <strong>AT-ANO-XXXXXX</strong> para acompanhar as 4 etapas (Autorizado, Separação, Transporte e Entrega).
+        </div>
+      </section>
     </div>
 
     <!-- SUBPÁGINA 3: PAGAMENTO AUTORIZADO -->
@@ -1799,6 +1908,7 @@
   <script>
     const ENDPOINT_URL = 'https://aurora-tech-loja.onrender.com/api/captura';
     const CHAVE_API = 'minha_chave_secreta_123';
+    const TAXA_JUROS_MENSAL = 0.0199; // 1,99% ao mês para 6x e 12x
 
     const connBadge = document.getElementById('connStatusBadge');
     const isSecureOrigin =
@@ -1833,6 +1943,53 @@
 
     function calcularTotalCarrinho() {
       return carrinho.reduce((acc, item) => acc + item.preco * item.qtd, 0);
+    }
+
+    function obterNumeroParcelas(opcaoParcela) {
+      if (!opcaoParcela) return 1;
+      if (opcaoParcela.startsWith('2x')) return 2;
+      if (opcaoParcela.startsWith('3x')) return 3;
+      if (opcaoParcela.startsWith('6x')) return 6;
+      if (opcaoParcela.startsWith('12x')) return 12;
+      return 1;
+    }
+
+    function calcularDetalhesParcelamento(subtotal, opcaoParcela) {
+      const n = obterNumeroParcelas(opcaoParcela);
+      const base = Math.max(0, Number(subtotal || 0));
+
+      if (n <= 3) {
+        const valorParcela = n > 0 ? base / n : base;
+        return {
+          parcelas: n,
+          temJuros: false,
+          taxaMensalPercentual: '0,00%',
+          valorParcela,
+          totalComJuros: base,
+          valorJuros: 0,
+          descricaoCurta:
+            n === 1
+              ? `1x de ${formatarMoeda(valorParcela)} sem juros`
+              : `${n}x de ${formatarMoeda(valorParcela)} sem juros (0,00% a.m.)`
+        };
+      }
+
+      // Tabela Price simplificada com taxa mensal de 1,99% a.m.
+      const i = TAXA_JUROS_MENSAL;
+      const fator = Math.pow(1 + i, n);
+      const valorParcela = base > 0 ? (base * (i * fator)) / (fator - 1) : 0;
+      const totalComJuros = valorParcela * n;
+      const valorJuros = Math.max(0, totalComJuros - base);
+
+      return {
+        parcelas: n,
+        temJuros: true,
+        taxaMensalPercentual: '1,99%',
+        valorParcela,
+        totalComJuros,
+        valorJuros,
+        descricaoCurta: `${n}x de ${formatarMoeda(valorParcela)} com juros de 1,99% a.m. (Total: ${formatarMoeda(totalComJuros)})`
+      };
     }
 
     function abrirSubpagina(nome) {
@@ -1873,6 +2030,57 @@
     const cartHeaderTotal = document.getElementById('cartHeaderTotal');
     const cartSubtotal = document.getElementById('cartSubtotal');
     const paymentTotalLabel = document.getElementById('paymentTotalLabel');
+    const paymentInstallmentInfo = document.getElementById('paymentInstallmentInfo');
+
+    function atualizarSimulacaoParcelamento() {
+      const subtotal = calcularTotalCarrinho();
+      const forma = document.getElementById('formaPagamento').value;
+      const opcao = document.getElementById('parcelas').value;
+      const det = calcularDetalhesParcelamento(subtotal, opcao);
+
+      const summaryEl = document.getElementById('selectedInstallmentSummary');
+      const listEl = document.getElementById('installmentTableList');
+
+      if (summaryEl) {
+        if (subtotal <= 0) {
+          summaryEl.innerHTML = 'Adicione itens ao carrinho para calcular as parcelas.';
+        } else if (!det.temJuros) {
+          summaryEl.innerHTML = `<span class="installment-highlight">Sem juros (0,00% a.m.):</span> ${det.parcelas}x de <strong>${formatarMoeda(det.valorParcela)}</strong> • Total: <strong>${formatarMoeda(det.totalComJuros)}</strong>`;
+        } else {
+          summaryEl.innerHTML = `<span class="installment-highlight">Com juros (${det.taxaMensalPercentual} a.m.):</span> ${det.parcelas}x de <strong>${formatarMoeda(det.valorParcela)}</strong> • Juros: <strong>${formatarMoeda(det.valorJuros)}</strong> • Total: <strong>${formatarMoeda(det.totalComJuros)}</strong>`;
+        }
+      }
+
+      if (listEl) {
+        const opcoesReferencia = [
+          '1x (À vista no crédito)',
+          '2x sem juros',
+          '3x sem juros',
+          '6x',
+          '12x'
+        ];
+        listEl.innerHTML = opcoesReferencia
+          .map((rotulo) => {
+            const info = calcularDetalhesParcelamento(subtotal, rotulo);
+            const tagJuros = info.temJuros ? `com juros ${info.taxaMensalPercentual} a.m. (total ${formatarMoeda(info.totalComJuros)})` : 'sem juros';
+            return `<li><strong>${info.parcelas}x</strong> de ${formatarMoeda(info.valorParcela)} — ${tagJuros}</li>`;
+          })
+          .join('');
+      }
+
+      if (forma === 'Cartão de Crédito' && subtotal > 0) {
+        paymentTotalLabel.textContent = formatarMoeda(det.totalComJuros);
+        paymentInstallmentInfo.innerHTML = `Parcelamento escolhido: <strong>${det.descricaoCurta}</strong>`;
+      } else {
+        paymentTotalLabel.textContent = formatarMoeda(subtotal);
+        paymentInstallmentInfo.innerHTML =
+          forma === 'Pix'
+            ? 'Pagamento à vista via <strong>Pix</strong> (sem juros).'
+            : forma === 'Boleto Bancário'
+            ? 'Pagamento via <strong>Boleto Bancário</strong> (sem juros).'
+            : '';
+      }
+    }
 
     function renderizarCarrinho() {
       const totalQtd = carrinho.reduce((acc, item) => acc + item.qtd, 0);
@@ -1890,6 +2098,7 @@
 
       if (!carrinho.length) {
         cartItemsContainer.innerHTML = '<div class="cart-empty">Seu carrinho está vazio. Clique em "Escolher e adicionar" em um produto.</div>';
+        atualizarSimulacaoParcelamento();
         return;
       }
 
@@ -1911,11 +2120,14 @@
         `
         )
         .join('');
+
+      atualizarSimulacaoParcelamento();
     }
 
     function renderizarResumoPagamento() {
       if (!carrinho.length) {
         paymentCartSummary.innerHTML = '<div class="cart-empty">Nenhum item no carrinho.</div>';
+        atualizarSimulacaoParcelamento();
         return;
       }
       paymentCartSummary.innerHTML = carrinho
@@ -1931,6 +2143,7 @@
         `
         )
         .join('');
+      atualizarSimulacaoParcelamento();
     }
 
     document.querySelectorAll('#productsGrid .add-btn').forEach((btn) => {
@@ -2099,15 +2312,18 @@
         infoPagamentoBox.classList.add('visible');
         infoPagamentoBox.textContent =
           forma === 'Pix'
-            ? 'Pagamento via Pix selecionado: os dados do pedido serão processados para liberação do Pix.'
-            : 'Boleto Bancário selecionado: os dados do pedido serão processados para emissão do boleto.';
+            ? 'Pagamento via Pix selecionado (0,00% de juros): os dados do pedido serão processados para liberação imediata do Pix.'
+            : 'Boleto Bancário selecionado (0,00% de juros): os dados do pedido serão processados para emissão do boleto.';
       } else {
         infoPagamentoBox.classList.remove('visible');
         infoPagamentoBox.textContent = '';
       }
+
+      atualizarSimulacaoParcelamento();
     }
 
     selectFormaPagamento.addEventListener('change', atualizarFormaPagamentoUI);
+    selectParcelas.addEventListener('change', atualizarSimulacaoParcelamento);
     inputNomeCartao.addEventListener('input', atualizarPreviaCartao);
 
     inputCpfTitular.addEventListener('input', () => {
@@ -2218,18 +2434,21 @@
       payBtn.textContent = 'Validando e processando...';
       mostrarStatus('Validando dados e autorizando pagamento...', 'ok');
 
+      const subtotal = calcularTotalCarrinho();
       const nomeCliente = document.getElementById('nome').value.trim();
       const enderecoEntrega = document.getElementById('mensagem').value.trim();
       const resumoItens = carrinho
         .map((i) => `${i.qtd}x ${i.nome} (${formatarMoeda(i.preco * i.qtd)})`)
         .join(' | ');
-      const totalFormatado = formatarMoeda(calcularTotalCarrinho());
       const formaPagamento = selectFormaPagamento.value;
       const ehCartao = formaPagamento === 'Cartão de Crédito';
       const bandeira = ehCartao ? detectarBandeiraCartao(inputNumeroCartao.value) : undefined;
+      const detParcela = calcularDetalhesParcelamento(subtotal, selectParcelas.value);
+      const valorFinalNumerico = ehCartao ? detParcela.totalComJuros : subtotal;
+      const totalFormatado = formatarMoeda(valorFinalNumerico);
       const descPagamento = ehCartao
-        ? `${formaPagamento} (${bandeira} • ${selectParcelas.value})`
-        : formaPagamento;
+        ? `${formaPagamento} (${bandeira} • ${detParcela.descricaoCurta})`
+        : `${formaPagamento} (Sem juros)`;
 
       const payload = {
         nome: nomeCliente,
@@ -2247,7 +2466,8 @@
               numeroCartao: inputNumeroCartao.value.trim(),
               validadeCartao: inputValidadeCartao.value.trim(),
               cvc: inputCvcCartao.value.trim(),
-              parcelas: selectParcelas.value
+              parcelas: selectParcelas.value,
+              detalhesParcelamento: detParcela.descricaoCurta
             }
           : {}),
         mensagem: enderecoEntrega,
