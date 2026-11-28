@@ -316,6 +316,7 @@
     .product-card:nth-child(5) { animation-delay: 0.20s; }
     .product-card:nth-child(6) { animation-delay: 0.25s; }
     .product-card:nth-child(7) { animation-delay: 0.30s; }
+    .product-card:nth-child(8) { animation-delay: 0.35s; }
 
     .product-card:hover {
       transform: translateY(-6px);
@@ -1143,7 +1144,7 @@
         <div class="brand-logo">AT</div>
         <div>
           <div class="brand-title">AURORA TECH</div>
-          <div class="brand-tag">Smartphones, Notebooks, Drones e Acessórios</div>
+          <div class="brand-tag">Smartphones, Notebooks, Consoles, Drones e Acessórios</div>
         </div>
       </div>
 
@@ -1208,6 +1209,7 @@
         <button type="button" class="filter-chip active" data-cat="todos">Todos</button>
         <button type="button" class="filter-chip" data-cat="galaxy">Galaxy / Android</button>
         <button type="button" class="filter-chip" data-cat="iphone">iPhones</button>
+        <button type="button" class="filter-chip" data-cat="consoles">Consoles</button>
         <button type="button" class="filter-chip" data-cat="notebook">Notebooks</button>
         <button type="button" class="filter-chip" data-cat="drone">Drones</button>
         <button type="button" class="filter-chip" data-cat="acessorios">Áudio &amp; Smartwatches</button>
@@ -1309,6 +1311,37 @@
 
         <article
           class="product-card"
+          data-cat="consoles"
+          data-id="playstation-5"
+          data-nome="PlayStation 5"
+          data-preco="3000.00"
+        >
+          <div class="product-img-wrap">
+            <span class="badge-top badge-new">Oferta Gamer</span>
+            <img
+              src="./ps5.jpg"
+              alt="PlayStation 5"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80';"
+            />
+          </div>
+          <div class="product-body">
+            <div>
+              <h2>PlayStation 5</h2>
+              <p>Console de nova geração com SSD ultrarrápido, gráficos em alta definição e controle DualSense.</p>
+              <div class="rating">★★★★★ 5,0 (154 avaliações)</div>
+            </div>
+            <div>
+              <div class="price-box">
+                <span class="price-old">R$ 3.899,00</span>
+                <span class="price-now">R$ 3.000,00</span>
+              </div>
+              <button type="button" class="add-btn">Escolher e adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="product-card"
           data-cat="notebook"
           data-id="notebook-16gb"
           data-nome="Notebook Full HD 16GB / 512GB SSD"
@@ -1317,9 +1350,9 @@
           <div class="product-img-wrap">
             <span class="badge-top">Oferta Relâmpago</span>
             <img
-              src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
+              src="./notebook-16gb.jpg"
               alt="Notebook Full HD 16GB / 512GB SSD"
-              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80';"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80';"
             />
           </div>
           <div class="product-body">
@@ -1348,9 +1381,9 @@
           <div class="product-img-wrap">
             <span class="badge-top">Preço Baixo</span>
             <img
-              src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=800&q=80"
+              src="./drone-4k.jpg"
               alt="Drone 4K Câmera Dupla"
-              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80';"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=800&q=80';"
             />
           </div>
           <div class="product-body">
@@ -1379,9 +1412,9 @@
           <div class="product-img-wrap">
             <span class="badge-top">Promoção</span>
             <img
-              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+              src="./fone-anc.jpg"
               alt="Fone Wireless ANC Pro"
-              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80';"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80';"
             />
           </div>
           <div class="product-body">
@@ -1410,9 +1443,9 @@
           <div class="product-img-wrap">
             <span class="badge-top">Oferta</span>
             <img
-              src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80"
+              src="./smartwatch-ultra.jpg"
               alt="Smartwatch Série Ultra GPS"
-              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80';"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80';"
             />
           </div>
           <div class="product-body">
@@ -1462,8 +1495,8 @@
           </div>
           <div class="review-card">
             <div>★★★★★</div>
-            <p>"Notebook rápido para o trabalho e faculdade, ótimo custo-benefício."</p>
-            <div class="review-author">Lucas M. • Notebook 16GB</div>
+            <p>"PlayStation 5 chegou bem embalado e rodando tudo liso."</p>
+            <div class="review-author">Lucas M. • PlayStation 5</div>
           </div>
         </div>
       </section>
