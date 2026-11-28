@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AURORA TECH — Loja Oficial de Eletrônicos</title>
+  <link rel="icon" type="image/jpeg" href="./logo-aurora.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -136,8 +137,8 @@
     }
 
     .brand-logo {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 13px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #ffffff;
@@ -146,8 +147,17 @@
       font-weight: 800;
       font-size: 1rem;
       letter-spacing: -0.03em;
+      overflow: hidden;
+      border: 1px solid rgba(255, 59, 78, 0.45);
       box-shadow: 0 8px 20px rgba(225, 29, 46, 0.34);
       animation: floatSlow 3.6s ease-in-out infinite;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand-title {
@@ -1278,7 +1288,13 @@
   <div class="wrap">
     <header class="main-header">
       <div class="brand" id="brandHome">
-        <div class="brand-logo">AT</div>
+        <div class="brand-logo" id="brandLogoBox">
+          <img
+            src="./logo-aurora.jpg"
+            alt="Logo AURORA TECH"
+            onerror="this.parentElement.textContent='AT';"
+          />
+        </div>
         <div>
           <div class="brand-title">AURORA TECH</div>
           <div class="brand-tag">Smartphones, Notebooks, Consoles, Drones e Acessórios</div>
@@ -2020,7 +2036,7 @@
     const ENDPOINT_URL = 'https://aurora-tech-loja.onrender.com/api/captura';
     const CHAVE_API = 'minha_chave_secreta_123';
     const GOOGLE_CLIENT_ID = '437564778111-t44672tk41ptvabk5am0si4k8boapp5h.apps.googleusercontent.com';
-    const TAXA_JUROS_MENSAL = 0.0199; // 1,99% ao mês para 6x e 12x[cite: 9]
+    const TAXA_JUROS_MENSAL = 0.0199; // 1,99% ao mês para 6x e 12x
 
     const connBadge = document.getElementById('connStatusBadge');
     const isSecureOrigin =
